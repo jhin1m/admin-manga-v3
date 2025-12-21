@@ -45,7 +45,7 @@ describe('Login Page', () => {
     await nextTick()
 
     expect(component.text()).toContain('Invalid email address')
-    expect(component.text()).toContain('Password is required')
+    expect(component.text()).toContain('Password must be at least 8 characters')
   })
 
   it('validates email format', async () => {

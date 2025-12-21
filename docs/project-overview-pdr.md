@@ -1,6 +1,6 @@
 # Project Overview & Product Development Requirements (PDR)
 
-**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 03 - Login Page UI
+**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 04 - Route Middleware
 
 ---
 
@@ -68,8 +68,10 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
   - Logout clears token and redirects to login page
   - **API Client**: $fetch wrapper with configurable baseURL and error handling (Implemented Phase 01)
   - **Loading State**: Visual feedback during authentication (Implemented Phase 03)
+  - **Route Protection**: Unauthenticated users redirected from admin routes to /login (Implemented Phase 04)
+  - **Guest Protection**: Authenticated users redirected from /login to dashboard (Implemented Phase 04)
 - **Priority**: P0 (Critical)
-- **Phase**: Phase 01-03 (Completed)
+- **Phase**: Phase 01-05 (Completed)
 
 ### FR-002: Dashboard
 - **Description**: Display overview of system statistics
@@ -408,6 +410,7 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2025-12-21 | Docs Manager | Initial PDR - Phase 01 & 05 Completion |
+| 1.1 | 2025-12-21 | Docs Manager | Update Phase 02, 03, 04 - Auth & Middleware |
 
 ---
 

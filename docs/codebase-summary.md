@@ -1,6 +1,6 @@
 # Codebase Summary - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 03 - Login Page UI
+**Last Updated**: 2025-12-21 | **Phase**: Phase 04 - Route Middleware
 
 ## Project Overview
 
@@ -14,6 +14,7 @@ Admin Manga v3 is a Nuxt 4 management application built with Vue 3, TypeScript, 
 - **Validation**: Zod
 - **Testing**: Vitest + @nuxt/test-utils (Happy DOM environment)
 - **Auth Strategy**: JWT with localStorage persistence and SSR-safe state
+- **Route Protection**: Global auth middleware with hydration safety
 
 ## Core Directory Structure
 
@@ -25,6 +26,7 @@ app/
 ├── components/           # Auto-imported Vue components
 ├── composables/          # Shared logic (useAuth, etc.)
 ├── layouts/              # UI wrappers (default, auth)
+├── middleware/           # Route guards (auth.global, guest)
 ├── pages/                # Route-based components
 ├── plugins/              # Client/Server side plugins
 └── utils/                # Helper functions (api client)
@@ -34,29 +36,26 @@ plans/                    # Planning and reports
 vitest.config.ts          # Test configuration
 ```
 
-## Recent Implementation: Phase 03 (Login Page UI)
+## Recent Implementation: Phase 04 (Route Middleware)
 
-### 1. Login Implementation (`app/pages/login.vue`)
-- **Layout**: Uses `auth` layout (centered, minimal).
-- **Form System**: Utilizes `<UForm>` with Zod schema validation.
-- **Security**: Password fields and email validation enforced at the UI level.
-- **Integration**: Directly calls `auth.login()` from the auth composable.
-- **UX**: Includes loading states on the submit button.
+### 1. Global Authentication Guard (`app/middleware/auth.global.ts`)
+- **Behavior**: Protects all routes except `/login`.
+- **SSR Safety**: Uses a dual-check strategy. On the client, it checks `localStorage` directly to prevent flashes during hydration. On the server, it checks the reactive state.
+- **Redirection**: Automatically sends unauthenticated users to `/login`.
 
-### 2. Testing Suite (`app/pages/login.test.ts`)
-- **Environment**: Configured with `@nuxt/test-utils` for Nuxt context.
-- **Coverage**: Validates rendering, input handling, and validation logic.
-- **Mocks**: Global stubs for `navigateTo` and `localStorage`.
+### 2. Guest Guard (`app/middleware/guest.ts`)
+- **Behavior**: Prevents authenticated users from accessing the login page.
+- **Redirection**: Sends users back to the dashboard if a token is detected.
 
-### 3. Dependency Updates
-- Added `zod` for schema validation.
-- Added `vitest` and `@nuxt/test-utils` for the testing framework.
-- Added `@vue/test-utils` and `happy-dom` for component testing.
+### 3. Middleware Testing (`app/middleware/middleware.test.ts`)
+- **Strategy**: Unit tests middleware logic by exporting pure functions.
+- **Coverage**: Achieved 100% code coverage for auth and guest logic.
 
 ## Standards & Patterns
 
+- **Middleware**: Use `.global.ts` suffix for middleware that should apply to all routes.
 - **Validation**: Always use Zod schemas for forms.
-- **Testing**: New features should include unit tests adjacent to source files.
+- **Testing**: New features must include unit tests. Logic should be separated from Nuxt-specific globals for easier testing.
 - **Auto-imports**: Leverage Nuxt 4's auto-importing for components and composables.
 - **State**: Use `useState` for cross-component shared state to ensure SSR compatibility.
 
@@ -65,6 +64,6 @@ vitest.config.ts          # Test configuration
 - [x] Phase 01: API Setup & Runtime Config
 - [x] Phase 02: Auth State & Composables
 - [x] Phase 03: Login Page UI & Validation
+- [x] Phase 04: Route Middleware & Global Guards
 - [x] Phase 05: Layout System Separation
-- [ ] Phase 04: Admin Dashboard & Manga Management
-- [ ] Phase 06: User Management
+- [ ] Phase 06: Admin Dashboard & Manga Management

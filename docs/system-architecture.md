@@ -1,6 +1,6 @@
 # System Architecture - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 03 - Login Page UI
+**Last Updated**: 2025-12-21 | **Phase**: Phase 04 - Route Middleware
 
 ## Architecture Overview
 
@@ -261,56 +261,61 @@ const {
 
 ```
 app/pages/
-├── index.vue               → GET /          (default layout)
-├── login.vue               → GET /login     (auth layout)
-└── [id].vue                → GET /:id       (dynamic, default layout)
+├── index.vue               → GET /          (default layout, auth protected)
+├── login.vue               → GET /login     (auth layout, guest only)
+└── [id].vue                → GET /:id       (dynamic, default layout, auth protected)
 ```
 
 ### Route-to-Layout Mapping
 
-| Route | Page File | Layout | Purpose |
-|-------|-----------|--------|---------|
-| `/` | `index.vue` | default | Admin dashboard |
-| `/login` | `login.vue` | auth | Login page |
-| Future: `/mangas` | `mangas.vue` | default | Manga list |
-| Future: `/mangas/:id` | `mangas/[id].vue` | default | Manga detail |
+| Route | Page File | Layout | Middleware | Purpose |
+|-------|-----------|--------|------------|---------|
+| `/` | `index.vue` | default | `auth.global` | Admin dashboard |
+| `/login` | `login.vue` | auth | `guest` | Login page |
+| Future: `/mangas` | `mangas.vue` | default | `auth.global` | Manga list |
 
 ### Navigation Flow
 
 ```
 Start
  ↓
-GET /login (no auth)
+GET / (no auth)
+ ↓
+Middleware: auth.global detects no token
+ ↓
+Redirect to /login
  ↓
 Layout: auth → Page: login.vue
  ↓
-User logs in (Phase 03)
+User logs in
  ↓
 auth.token = JWT
  ↓
 Navigate to GET /
  ↓
-Layout: default → Page: index.vue
- ↓
-Display dashboard (with user header)
+Display dashboard
  ↓
 User logs out
  ↓
 auth.logout() clears state + navigates to /login
 ```
 
-### Route Protection (Planned Phase 02)
+### Route Protection (Implemented Phase 04)
 
-Will use Nuxt route middleware:
-```ts
-// app/middleware/auth.ts
-export default defineRouteMiddleware((to, from) => {
-  const auth = useAuth()
-  if (!auth.isAuthenticated.value && to.path !== '/login') {
-    return navigateTo('/login')
-  }
-})
-```
+The application uses a hybrid approach for route protection to handle Nuxt's SSR and hydration phases correctly:
+
+1. **Global Auth Guard** (`app/middleware/auth.global.ts`):
+   - Protects all routes by default.
+   - Skips check for `/login`.
+   - On **Client**: Checks `localStorage` directly for `admin_token` to prevent navigation flashes during hydration.
+   - On **Server**: Checks `useAuth()` state.
+
+2. **Guest Guard** (`app/middleware/guest.ts`):
+   - Applied to `/login` via `definePageMeta`.
+   - Redirects authenticated users back to the dashboard.
+
+3. **Logic Separation for Testing**:
+   - Middleware logic is exported as pure functions (`authMiddlewareLogic`, `guestMiddlewareLogic`) to allow unit testing without a full Nuxt context.
 
 ---
 
@@ -433,21 +438,21 @@ Navigate to dashboard or show error
 
 ## Security Architecture
 
-### Current Measures (Phase 01 & 05)
+### Current Measures (Phase 01-05)
 
 1. **CSRF Protection**: Not yet (backend responsibility)
 2. **XSS Prevention**: Nuxt template auto-escaping + Nuxt UI sanitization
-3. **Token Storage**: localStorage (client-side only, will upgrade Phase 02)
-4. **Auth Check**: Server-side conditional (`import.meta.client`)
-5. **Config Safety**: Public API URL exposed via `runtimeConfig.public` (safe for client)
+3. **Token Storage**: localStorage (client-side only)
+4. **Auth Check**: Server-side conditional + Client-side localStorage check in middleware (Phase 04)
+5. **Config Safety**: Public API URL exposed via `runtimeConfig.public`
+6. **Route Protection**: Global auth middleware + Guest middleware (Phase 04)
 
-### Planned Improvements (Phase 02+)
+### Planned Improvements (Phase 06+)
 
 1. **httpOnly Cookies**: Replace localStorage for token
 2. **Refresh Token Rotation**: Implement token refresh flow
-3. **Route Middleware**: Protect admin routes
-4. **CSRF Tokens**: Add CSRF protection
-5. **Rate Limiting**: Backend enforces (see API docs)
+3. **CSRF Tokens**: Add CSRF protection
+4. **Rate Limiting**: Backend enforces (see API docs)
 
 ---
 

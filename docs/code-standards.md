@@ -467,15 +467,21 @@ Before committing:
 - Client initialization plugin
 - SSR-safe state management
 
-**Phase 03 (Planned)**
-- Login page UI
-- Form validation
-- Error handling
+**Phase 03 (Completed)**
+- Login page UI using Nuxt UI v4
+- Form validation with Zod
+- Standardized error/loading states
 
-**Phase 04 (Planned)**
-- Admin dashboard pages
-- CRUD operations
-- Data tables
+**Phase 04 (Completed)**
+- Global auth middleware (`auth.global.ts`)
+- Guest middleware for auth pages
+- SSR/hydration-safe logic (localStorage direct check on client)
+- 100% logic coverage with Vitest
+
+**Phase 05 (Completed)**
+- Layout separation (Admin vs Auth)
+- Header with user info and logout
+- Dark mode integration
 
 ---
 

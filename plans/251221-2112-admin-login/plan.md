@@ -9,7 +9,7 @@ Implement complete authentication system for admin manga panel with login page, 
 | 01 | Runtime Config & API Setup | ✅ Done |
 | 02 | Auth Composable & State | ✅ Done |
 | 03 | Login Page UI | ✅ Done |
-| 04 | Route Middleware | ⏳ Pending |
+| 04 | Route Middleware | ✅ Done |
 | 05 | Layout Separation | ✅ Done |
 
 ## Tech Stack
