@@ -1,6 +1,6 @@
 # Code Standards - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Reference**: CLAUDE.md + ESLint Config
+**Last Updated**: 2025-12-21 | **Reference**: CLAUDE.md + Phase 02 Implementation
 
 ## Code Style Rules
 
@@ -238,32 +238,42 @@ definePageMeta({ layout: 'custom-layout' })
 ```ts
 // app/composables/use-auth.ts
 export const useAuth = () => {
-  // State
-  const user = useState('auth_user', () => null)
-  const token = useState('auth_token', () => null)
+  // State (using useState for SSR safety)
+  const token = useState<string | null>('auth_token', () => null)
+  const user = useState<User | null>('auth_user', () => null)
   const isLoading = useState('auth_loading', () => false)
 
   // Computed
   const isAuthenticated = computed(() => !!token.value)
 
   // Methods
+  const login = async (credentials) => {
+    // API call + token storage
+  }
+
   const logout = () => {
-    user.value = null
     token.value = null
+    user.value = null
     if (import.meta.client) {
       localStorage.removeItem('admin_token')
-      localStorage.removeItem('admin_user')
     }
     navigateTo('/login')
   }
 
-  // Public API
+  const init = () => {
+    if (import.meta.client) {
+      const stored = localStorage.getItem('admin_token')
+      if (stored) token.value = stored
+    }
+  }
+
   return {
-    user,
-    token,
-    isLoading,
+    token: readonly(token),
+    user: readonly(user),
     isAuthenticated,
-    logout
+    login,
+    logout,
+    init
   }
 }
 ```
@@ -407,15 +417,11 @@ Before committing:
 
 ## Phase-specific Notes
 
-**Phase 05 (Current)**
-- Layout separation implemented
-- Auth stub only (logout functional)
-- No route protection yet
-
-**Phase 02 (Planned)**
-- Full auth composable (login/register/token refresh)
-- API integration for authentication
-- Route middleware for protection
+**Phase 02 (Completed)**
+- Full auth composable implemented
+- Persistence in localStorage
+- Client initialization plugin
+- SSR-safe state management
 
 **Phase 03 (Planned)**
 - Login page UI

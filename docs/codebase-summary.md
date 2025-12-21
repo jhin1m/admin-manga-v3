@@ -1,6 +1,6 @@
 # Codebase Summary - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 01 - Runtime Config & API Setup
+**Last Updated**: 2025-12-21 | **Phase**: Phase 02 - Auth Composable & State
 
 ## Project Overview
 
@@ -31,7 +31,9 @@ app/
 │   ├── AppLogo.vue        # Logo component
 │   └── TemplateMenu.vue   # Menu component
 ├── composables/           # Auto-imported Vue composables
-│   └── use-auth.ts        # Auth state management
+│   └── use-auth.ts        # Auth state management & methods
+├── plugins/               # Nuxt plugins
+│   └── auth.client.ts     # Client-side auth initialization
 ├── assets/                # Static assets (CSS, images)
 │   └── css/
 │       └── main.css       # Global styles
@@ -70,11 +72,22 @@ plans/
 
 ### Composables
 
-**use-auth.ts** (Auth Stub - Phase 05)
-- State: `user`, `token`, `isLoading`
+**use-auth.ts** (Auth State Management)
+- State: `user`, `token`, `isLoading` (using `useState` for SSR safety)
 - Computed: `isAuthenticated`
-- Methods: `logout()` (clears state, navigates to `/login`)
-- Full implementation planned for Phase 02
+- Methods:
+  - `login(credentials)`: Authenticates with API, stores token
+  - `logout()`: Clears state/storage, navigates to `/login`
+  - `fetchProfile()`: Retrieves user data using token
+  - `init()`: Restores token from `localStorage` (client-only)
+- Persistence: Token stored in `localStorage` as `admin_token`
+- Integration: Uses `useToast` for notifications and handling 401 unauthorized errors
+
+### Plugins
+
+**auth.client.ts**
+- Client-side only plugin
+- Initializes auth state by calling `auth.init()` on app startup
 
 ### Utils
 
@@ -128,10 +141,11 @@ File-based routing from `app/pages/`:
 - Components from `app/components/` (UButton, UCard, etc.)
 
 ### Auth Flow
-- User state stored via `useAuth()` composable (Nuxt useState)
-- Token stored in localStorage (client-side only)
-- Logout clears state + redirects to `/login`
-- Full auth (login/register/protection) planned for Phase 02-03
+- User state stored via `useAuth()` composable (Nuxt `useState`)
+- Token persisted in `localStorage` (`admin_token`)
+- `auth.client.ts` plugin restores session on client startup
+- `logout()` clears all state and redirects to `/login`
+- Automatic logout on 401 Unauthorized API responses in `fetchProfile`
 
 ### Styling
 - Tailwind CSS via Nuxt UI v4
@@ -188,20 +202,17 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 
 ## Current Implementation Status
 
-### Completed (Phase 01 & 05)
+### Completed (Phase 01, 05 & 02)
 - Runtime Config & API Setup (Phase 01)
 - Layout separation (default + auth) (Phase 05)
-- App.vue simplified to use NuxtLayout
-- Login page stub with auth layout
-- useAuth() composable (state management stub)
-- useApi() utility (API client wrapper)
-- Component auto-imports working
+- Full auth composable & state management (Phase 02)
+- Token persistence & SSR-safe state
+- Client-side auth initialization plugin
 
 ### Planned
-- **Phase 02**: Full auth composable (login/register/token management)
 - **Phase 03**: Login page UI implementation
 - **Phase 04**: Admin dashboard pages
-- Future: API integration, permissions system, data management
+- Future: API integration for manga management, permissions system, route protection middleware
 
 ---
 
@@ -241,6 +252,14 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 - Implemented `useApi()` composable factory
 - Added `NUXT_PUBLIC_API_BASE` support in `.env`
 
+### Phase 02: Auth Composable & State (2025-12-21)
+- Implemented full `useAuth()` composable with `login`, `logout`, `fetchProfile`
+- Added token persistence in `localStorage` (`admin_token`)
+- Used SSR-safe `useState` for `user`, `token`, and `isLoading`
+- Created `app/plugins/auth.client.ts` for session restoration
+- Integrated toast notifications for login success/failure
+- Added 401-specific logout handling in profile fetching
+
 ### Phase 05: Layout Separation (2025-12-21)
 - Added `app/layouts/default.vue` - Admin layout with header/footer
 - Added `app/layouts/auth.vue` - Minimal auth layout
@@ -252,8 +271,7 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 
 ## Next Steps
 
-1. Implement full auth composable (Phase 02)
-2. Build login page UI (Phase 03)
-3. Create admin dashboard (Phase 04)
-4. Integrate backend API endpoints
-5. Implement route protection/auth middleware
+1. Build login page UI (Phase 03)
+2. Create admin dashboard (Phase 04)
+3. Implement route protection middleware
+4. Integrate manga management API endpoints
