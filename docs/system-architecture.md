@@ -1,6 +1,6 @@
 # System Architecture - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 01 - Runtime Config & API Setup
+**Last Updated**: 2025-12-21 | **Phase**: Phase 03 - Login Page UI
 
 ## Architecture Overview
 
@@ -26,13 +26,60 @@ Admin Manga v3 uses a layered client-side architecture with Nuxt 4 as the meta-f
 │  State Management                                   │
 │  └─ Nuxt useState() (Server-friendly reactive)      │
 ├─────────────────────────────────────────────────────┤
-│  HTTP Client (Future)                               │
+│  Form Validation                                    │
+│  └─ Zod                                             │
+├─────────────────────────────────────────────────────┤
+│  Testing Infrastructure                             │
+│  └─ Vitest + @nuxt/test-utils                       │
+├─────────────────────────────────────────────────────┤
+│  HTTP Client                                        │
 │  └─ $fetch (Nuxt built-in, replaces axios)         │
 ├─────────────────────────────────────────────────────┤
 │  Backend APIs (Laravel)                             │
 │  └─ http://127.0.0.1:8000/api/admin                │
 └─────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Form Architecture (Phase 03)
+
+### Decision: Schema-driven Validation
+
+**Problem**: Manual validation is error-prone, hard to type-safe, and difficult to maintain.
+
+**Solution**: Use **Zod** for schema definition and Nuxt UI's `<UForm>` for rendering.
+- Defined schemas provide compile-time and runtime type safety
+- Automatic error message mapping to UI components
+- Clean separation of validation logic from component state
+
+### Data Flow (Login Form)
+
+```
+User Input → Reactive State (reactive)
+                 ↓
+      UForm @submit event
+                 ↓
+      Zod Schema Validation
+                 ↓
+      (If Success) → auth.login(data)
+                 ↓
+      (If Success) → navigateTo('/')
+```
+
+---
+
+## Testing Architecture (Phase 03)
+
+### Strategy: Nuxt-integrated Testing
+
+**Framework**: Vitest
+**Environment**: `nuxt` (via `@nuxt/test-utils`)
+
+#### Features:
+- **mountSuspended**: Renders components within a Nuxt runtime, supporting auto-imports and Nuxt-specific components
+- **Mocking**: Global mocks for Nuxt/Vue globals (localStorage, navigateTo)
+- **Coverage**: V8-based coverage for the `app/` directory
 
 ---
 

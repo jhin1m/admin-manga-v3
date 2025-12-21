@@ -1,9 +1,31 @@
 <script setup lang="ts">
-// Minimal login page stub for Phase 05 testing
-// Full implementation in Phase 03
+import { z } from 'zod'
+import type { FormSubmitEvent } from '@nuxt/ui'
+
 definePageMeta({
   layout: 'auth'
 })
+
+const auth = useAuth()
+
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Password must be at least 8 characters')
+})
+
+type Schema = z.output<typeof schema>
+
+const state = reactive({
+  email: '',
+  password: ''
+})
+
+async function onSubmit(event: FormSubmitEvent<Schema>) {
+  const success = await auth.login(event.data)
+  if (success) {
+    navigateTo('/')
+  }
+}
 </script>
 
 <template>
@@ -20,11 +42,49 @@ definePageMeta({
         </div>
       </template>
 
-      <div class="space-y-4">
-        <p class="text-sm text-muted text-center">
-          Login page stub - Full implementation in Phase 03
-        </p>
-      </div>
+      <UForm
+        :schema="schema"
+        :state="state"
+        class="space-y-4"
+        @submit="onSubmit"
+      >
+        <UFormField
+          label="Email"
+          name="email"
+        >
+          <UInput
+            v-model="state.email"
+            type="email"
+            placeholder="admin@example.com"
+            icon="i-lucide-mail"
+            size="lg"
+            autocomplete="email"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Password"
+          name="password"
+        >
+          <UInput
+            v-model="state.password"
+            type="password"
+            placeholder="••••••••"
+            icon="i-lucide-lock"
+            size="lg"
+            autocomplete="current-password"
+          />
+        </UFormField>
+
+        <UButton
+          type="submit"
+          block
+          size="lg"
+          :loading="auth.isLoading.value"
+        >
+          Sign in
+        </UButton>
+      </UForm>
     </UCard>
   </div>
 </template>

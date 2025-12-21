@@ -1,6 +1,6 @@
 # Project Overview & Product Development Requirements (PDR)
 
-**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 01 & 05
+**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 03 - Login Page UI
 
 ---
 
@@ -17,6 +17,8 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 **Technology Stack**:
 - Frontend: Nuxt 4 + Vue 3 + TypeScript
 - UI Framework: Nuxt UI v4 (Tailwind CSS + Radix UI)
+- Validation: Zod
+- Testing: Vitest + @nuxt/test-utils
 - Backend: Laravel (separate, see API_ADMIN_DOCUMENTATION.md)
 - Package Manager: pnpm
 - Deployment: TBD
@@ -33,6 +35,7 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 - Content moderation
 - System statistics dashboard
 - Dark/light theme support
+- Unit and integration testing
 
 ### Out of Scope (V4+)
 - Real-time notifications
@@ -57,14 +60,16 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 - **Description**: Admin users must log in with email/password
 - **Acceptance Criteria**:
   - User enters email + password on login page
+  - **Validation**: Email format and minimum password length (8 chars) enforced via Zod (Implemented Phase 03)
   - Backend validates credentials
   - System returns JWT token on success
   - Token persisted in localStorage
   - User info (name, email) displayed in header
   - Logout clears token and redirects to login page
-  - **API Client**: $fetch wrapper with configurable baseURL and error handling (implemented Phase 01)
+  - **API Client**: $fetch wrapper with configurable baseURL and error handling (Implemented Phase 01)
+  - **Loading State**: Visual feedback during authentication (Implemented Phase 03)
 - **Priority**: P0 (Critical)
-- **Phase**: Phase 01-03
+- **Phase**: Phase 01-03 (Completed)
 
 ### FR-002: Dashboard
 - **Description**: Display overview of system statistics

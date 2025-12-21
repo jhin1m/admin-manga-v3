@@ -1,6 +1,6 @@
 # Code Standards - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Reference**: CLAUDE.md + Phase 02 Implementation
+**Last Updated**: 2025-12-21 | **Reference**: CLAUDE.md + Phase 03 Implementation
 
 ## Code Style Rules
 
@@ -45,6 +45,50 @@
 - Layouts: lowercase (e.g., `default.vue`, `auth.vue`)
 - Composables: `use-` prefix in kebab-case (e.g., `use-auth.ts`)
 - Utils: lowercase with hyphens (e.g., `api-client.ts`)
+
+---
+
+## Testing Standards (Phase 03+)
+
+### Framework: Vitest
+- **Tooling**: `@nuxt/test-utils` for Nuxt environment
+- **Environment**: `happy-dom`
+- **File naming**: `[name].test.ts` adjacent to source
+- **Patterns**:
+  - Use `mountSuspended` from `@nuxt/test-utils/runtime` for component testing
+  - Mock global functions (like `navigateTo`) using `vi.stubGlobal`
+  - Use `vi.clearAllMocks()` in `beforeEach`
+
+```ts
+import { mountSuspended } from '@nuxt/test-utils/runtime'
+
+describe('Component', () => {
+  it('renders', async () => {
+    const component = await mountSuspended(MyComponent)
+    expect(component.text()).toContain('Hello')
+  })
+})
+```
+
+---
+
+## Form Validation (Phase 03+)
+
+### Library: Zod
+- Use Zod schemas for all form validation
+- Integrate with Nuxt UI `<UForm>` component
+- Define schemas at the top of the component script block
+
+```ts
+import { z } from 'zod'
+
+const schema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(8, 'Required')
+})
+
+type Schema = z.output<typeof schema>
+```
 
 ---
 
