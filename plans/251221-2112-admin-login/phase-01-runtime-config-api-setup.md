@@ -10,8 +10,8 @@
 |-------|-------|
 | Date | 2025-12-21 |
 | Priority | High |
-| Status | ⏳ Pending |
-| Review | ⏳ Pending |
+| Status | ✅ Complete |
+| Review | ✅ Approved - All fixes verified |
 
 Configure Nuxt runtime config for API base URL and create reusable API client wrapper.
 
@@ -87,14 +87,18 @@ export function useApi() {
 ```
 
 ## Todo List
-- [ ] Add runtimeConfig to nuxt.config.ts
-- [ ] Create app/utils/api.ts with types
-- [ ] Test config with `useRuntimeConfig()`
+- [x] Add runtimeConfig to nuxt.config.ts
+- [x] Create app/utils/api.ts with types
+- [x] Fix ESLint errors (unused param, key order)
+- [x] Add NUXT_PUBLIC_API_BASE env support
+- [x] Test config with `useRuntimeConfig()`
 
 ## Success Criteria
-- [ ] `useRuntimeConfig().public.apiBase` returns correct URL
-- [ ] API types defined for success/error responses
-- [ ] `useApi()` composable created
+- [x] `useRuntimeConfig().public.apiBase` returns correct URL
+- [x] API types defined for success/error responses
+- [x] `useApi()` composable created
+- [x] ESLint passes without errors
+- [x] Environment variable override functional
 
 ## Risk Assessment
 | Risk | Mitigation |

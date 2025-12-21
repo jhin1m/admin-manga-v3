@@ -1,6 +1,6 @@
 # System Architecture - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 05 - Layout Separation
+**Last Updated**: 2025-12-21 | **Phase**: Phase 01 - Runtime Config & API Setup
 
 ## Architecture Overview
 
@@ -187,10 +187,11 @@ Uses Nuxt `useState()` composable for simplicity:
    (auto-imported)
 ```
 
-### Storage Strategy (Phase 05)
+### Storage Strategy (Phase 01 & 05)
 
 - **In-memory**: `useState()` (fast, lost on refresh)
 - **localStorage**: Token persistence (client-only, manual sync needed)
+- **Runtime Config**: Environment-specific settings (API URL)
 - **Future** (Phase 02): Implement refresh token rotation + httpOnly cookies
 
 ### Auth Composable Interface
@@ -306,7 +307,21 @@ export default defineRouteMiddleware((to, from) => {
 
 ---
 
-## Data Flow (Phase 05)
+## Data Flow
+
+### API Integration Flow (Phase 01)
+
+```
+Component / Composable
+  ↓
+useApi() utility (app/utils/api.ts)
+  ↓
+$fetch.create() (reusable client)
+  ↓
+baseURL: runtimeConfig.public.apiBase
+  ↓
+Backend API
+```
 
 ### Current Flow (Auth Stub)
 
@@ -364,19 +379,20 @@ Navigate to dashboard or show error
 ### 6. Client-side localStorage with Server-side Check
 **Why**: SSR-safe, prevents errors in server context (Nuxt Node.js).
 
-### 7. File-based Routing (Pages)
-**Why**: Automatic route generation, no route file maintenance, scalable for growth.
+### 8. Config-driven API Client (Phase 01)
+**Why**: Avoids hardcoding URLs, allows per-environment configuration via `.env`, and centralizes error handling and token injection.
 
 ---
 
 ## Security Architecture
 
-### Current Measures (Phase 05)
+### Current Measures (Phase 01 & 05)
 
 1. **CSRF Protection**: Not yet (backend responsibility)
 2. **XSS Prevention**: Nuxt template auto-escaping + Nuxt UI sanitization
 3. **Token Storage**: localStorage (client-side only, will upgrade Phase 02)
 4. **Auth Check**: Server-side conditional (`import.meta.client`)
+5. **Config Safety**: Public API URL exposed via `runtimeConfig.public` (safe for client)
 
 ### Planned Improvements (Phase 02+)
 
@@ -442,7 +458,13 @@ NUXT_PUBLIC_API_TIMEOUT=5000
 
 ## Phase-based Architecture Evolution
 
-### Phase 05 (Current)
+### Phase 01 (Runtime Config & API Setup)
+- API client wrapper (`useApi`) ✓
+- Runtime config integration ✓
+- Typed API responses ✓
+- Environment variable support ✓
+
+### Phase 05 (Layout Separation)
 - Layout separation ✓
 - Basic auth stub ✓
 - Login page placeholder ✓

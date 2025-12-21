@@ -1,6 +1,6 @@
 # Codebase Summary - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 05 - Layout Separation
+**Last Updated**: 2025-12-21 | **Phase**: Phase 01 - Runtime Config & API Setup
 
 ## Project Overview
 
@@ -36,6 +36,7 @@ app/
 │   └── css/
 │       └── main.css       # Global styles
 └── utils/                 # Utility functions (auto-imported)
+    └── api.ts             # API client & types (Phase 01)
 
 docs/
 ├── codebase-summary.md      # This file
@@ -75,7 +76,13 @@ plans/
 - Methods: `logout()` (clears state, navigates to `/login`)
 - Full implementation planned for Phase 02
 
-### Pages
+### Utils
+
+**api.ts** (API Client - Phase 01)
+- `ApiResponse<T>` and `ApiError` interfaces
+- `useApi()` factory function using `$fetch.create`
+- Standardized error handling (logging `ApiError.message`)
+- Config-driven `baseURL` via `runtimeConfig.public.apiBase`
 
 **index.vue** (Dashboard)
 - Default admin dashboard
@@ -168,6 +175,7 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 - Route rules for prerendering
 - Custom CSS imports
 - Devtools enabled
+- `runtimeConfig` with `public.apiBase` (Phase 01)
 
 **app.config.ts**
 - UI theme configuration
@@ -180,11 +188,13 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 
 ## Current Implementation Status
 
-### Completed (Phase 05)
-- Layout separation (default + auth)
+### Completed (Phase 01 & 05)
+- Runtime Config & API Setup (Phase 01)
+- Layout separation (default + auth) (Phase 05)
 - App.vue simplified to use NuxtLayout
 - Login page stub with auth layout
 - useAuth() composable (state management stub)
+- useApi() utility (API client wrapper)
 - Component auto-imports working
 
 ### Planned
@@ -223,8 +233,15 @@ pnpm lint       # ESLint (no trailing commas, 1TBS brace style)
 
 ---
 
-## Recent Changes (Phase 05)
+## Recent Changes
 
+### Phase 01: Runtime Config & API Setup (2025-12-21)
+- Added `runtimeConfig.public.apiBase` to `nuxt.config.ts`
+- Created `app/utils/api.ts` with `ApiResponse`/`ApiError` types
+- Implemented `useApi()` composable factory
+- Added `NUXT_PUBLIC_API_BASE` support in `.env`
+
+### Phase 05: Layout Separation (2025-12-21)
 - Added `app/layouts/default.vue` - Admin layout with header/footer
 - Added `app/layouts/auth.vue` - Minimal auth layout
 - Modified `app/app.vue` - Simplified to use NuxtLayout delegation

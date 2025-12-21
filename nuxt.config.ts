@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/ui'
@@ -11,10 +12,15 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  runtimeConfig: {
+    public: {
+      apiBase: ''
+    }
+  },
+
   routeRules: {
     '/': { prerender: true }
   },
-
   compatibilityDate: '2025-01-15',
 
   eslint: {

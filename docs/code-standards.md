@@ -48,6 +48,46 @@
 
 ---
 
+## API Integration Pattern (Phase 01)
+
+### API Client Utility (`app/utils/api.ts`)
+```ts
+export interface ApiResponse<T> {
+  success: boolean
+  data: T
+  code: number
+}
+
+export function useApi() {
+  const config = useRuntimeConfig()
+  return $fetch.create({
+    baseURL: config.public.apiBase,
+    onResponseError({ response }) {
+      const error = response._data as ApiError
+      if (error?.message) {
+        console.error('API Error:', error.message)
+      }
+    }
+  })
+}
+```
+
+### Usage in Components/Composables
+```vue
+<script setup lang="ts">
+const api = useApi()
+
+const fetchData = async () => {
+  const response = await api<ApiResponse<Manga[]>>('/mangas')
+  if (response.success) {
+    // ...
+  }
+}
+</script>
+```
+
+---
+
 ## Vue Component Patterns
 
 ### Script Setup Syntax

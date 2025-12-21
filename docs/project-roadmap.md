@@ -4,7 +4,7 @@
 Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI v4. Provides authentication, manga CRUD operations, and admin dashboard capabilities.
 
 **Last Updated:** 2025-12-21
-**Overall Progress:** 20% (Phase 05/05 Complete)
+**Overall Progress:** 45% (Phase 01, 05 Complete)
 
 ---
 
@@ -12,7 +12,7 @@ Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI 
 
 | Phase | Component | Status | Progress | Target Date |
 |-------|-----------|--------|----------|------------|
-| Phase 01 | Runtime Config & API Setup | ⏳ Pending | 0% | 2025-12-22 |
+| Phase 01 | Runtime Config & API Setup | ✅ Done | 100% | 2025-12-21 |
 | Phase 02 | Auth Composable & State | ⏳ Pending | 0% | 2025-12-23 |
 | Phase 03 | Login Page UI | ⏳ Pending | 0% | 2025-12-24 |
 | Phase 04 | Route Middleware | ⏳ Pending | 0% | 2025-12-25 |
@@ -21,6 +21,27 @@ Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI 
 ---
 
 ## Detailed Phase Breakdown
+
+### Phase 01: Runtime Config & API Setup ✅ COMPLETE
+**Status:** ✅ Done (2025-12-21)
+**Review:** ✅ Approved
+**Completion:** 100%
+
+**Objectives Completed:**
+- Configured `runtimeConfig` in `nuxt.config.ts` for API base URL
+- Created `app/utils/api.ts` with TypeScript interfaces for API responses
+- Implemented `useApi()` utility with `$fetch.create` factory
+- Added `.env` support for `NUXT_PUBLIC_API_BASE`
+- Standardized error handling for API responses
+
+**Files Implemented:**
+- `nuxt.config.ts` - Runtime config setup
+- `app/utils/api.ts` - API client and types
+- `.env` - Environment variables
+
+**Test Results:** All tests passed, 0 lint/TS errors
+
+---
 
 ### Phase 05: Layout Separation ✅ COMPLETE
 **Status:** ✅ Done (2025-12-21 21:12:00)
@@ -146,6 +167,14 @@ Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI 
 
 ## Changelog
 
+### Version 1.0.0-alpha.2 (2025-12-21)
+- **Phase 01: Runtime Config & API Setup** - COMPLETE
+  - Configured Nuxt runtime config for API base URL
+  - Created typed API response/error interfaces
+  - Implemented `useApi()` utility with `$fetch.create`
+  - Added `NUXT_PUBLIC_API_BASE` environment variable support
+  - Standardized error logging for API responses
+
 ### Version 1.0.0-alpha.1 (2025-12-21)
 - **Phase 05: Layout Separation** - COMPLETE
   - Separated admin layout from auth layout
@@ -234,7 +263,7 @@ admin-manga-v3/
     ├── middleware/
     │   └── auth.ts                 # ⏳ Route protection (pending)
     └── utils/
-        └── api.ts                  # ⏳ API client (pending)
+        └── api.ts                  # ✅ API client & types
 ```
 
 ---

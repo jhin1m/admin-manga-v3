@@ -1,6 +1,6 @@
 # Project Overview & Product Development Requirements (PDR)
 
-**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 05
+**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 01 & 05
 
 ---
 
@@ -62,8 +62,9 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
   - Token persisted in localStorage
   - User info (name, email) displayed in header
   - Logout clears token and redirects to login page
+  - **API Client**: $fetch wrapper with configurable baseURL and error handling (implemented Phase 01)
 - **Priority**: P0 (Critical)
-- **Phase**: Phase 02-03
+- **Phase**: Phase 01-03
 
 ### FR-002: Dashboard
 - **Description**: Display overview of system statistics
@@ -212,13 +213,14 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 
 ## Development Phases
 
-### Phase 01 - Project Setup (Completed)
-- Nuxt 4 + Vue 3 setup
-- Nuxt UI v4 integration
-- ESLint + TypeScript configuration
-- Basic app structure
+### Phase 01 - Runtime Config & API Setup (Completed)
+- **Deliverables**:
+  - Runtime config for API base URL ✓
+  - API response/error TypeScript interfaces ✓
+  - useApi() utility with standardized error handling ✓
+  - .env support for API configuration ✓
 
-### Phase 05 - Layout Separation (Current)
+### Phase 05 - Layout Separation (Completed)
 - **Deliverables**:
   - Default layout with header/footer ✓
   - Auth layout (minimal) ✓
@@ -400,7 +402,7 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
-| 1.0 | 2025-12-21 | Docs Manager | Initial PDR - Phase 05 Layout Separation |
+| 1.0 | 2025-12-21 | Docs Manager | Initial PDR - Phase 01 & 05 Completion |
 
 ---
 
