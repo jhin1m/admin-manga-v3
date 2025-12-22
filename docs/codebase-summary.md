@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-Admin Manga v3 is a Nuxt 4 management application built with Vue 3, TypeScript, and Nuxt UI v4. It features a modern layout system, centralized authentication management, and a schema-driven form validation approach.
+Admin Manga v3 is a Nuxt 4 management application built with Vue 3, TypeScript, and Nuxt UI v4. It features a modern dashboard layout with a collapsible sidebar, centralized authentication management, and a schema-driven form validation approach.
 
 ## Key Technical Specifications
 
@@ -25,8 +25,9 @@ app/
 ├── assets/                # Global styles and static assets
 ├── components/
 │   └── dashboard/        # Dashboard-specific components (StatCard)
+├── config/               # Application configuration (navigation.ts)
 ├── composables/          # Shared logic (useAuth, useStatistics)
-├── layouts/              # UI wrappers (default, auth)
+├── layouts/              # UI wrappers (default sidebar, auth)
 ├── middleware/           # Route guards (auth.global, guest)
 ├── pages/                # Route-based components (dashboard, login)
 ├── plugins/              # Client/Server side plugins
@@ -39,25 +40,24 @@ vitest.config.ts          # Test configuration
 
 ## Recent Implementation: Phase 06 (Admin Dashboard)
 
-### 1. Statistics Composable (`app/composables/use-statistics.ts`)
-- **Purpose**: Fetch dashboard statistics from `/api/admin/statics/basic` endpoint.
-- **State Management**: SSR-safe with `useState` for stats, loading, and error states.
-- **Authentication**: Uses Bearer token from `useAuth` composable.
-- **Error Handling**: Graceful error messages with loading states.
-- **Data**: Fetches total_users, total_mangas, total_chapters, total_pets (placeholder if missing).
+### 1. Dashboard Layout (`app/layouts/default.vue`)
+- **Structure**: Uses `UDashboardGroup`, `UDashboardSidebar`, and `UDashboardPanel` from Nuxt UI v4.
+- **Sidebar**: Collapsible and resizable left sidebar containing:
+  - Header: Application logo and title.
+  - Body: `UNavigationMenu` driven by centralized config.
+  - Footer: User info, theme toggle, and logout button.
+- **Interactions**: Keyboard shortcut 'C' toggles sidebar visibility.
 
-### 2. StatCard Component (`app/components/dashboard/StatCard.vue`)
-- **Purpose**: Reusable stat display card with label and value.
-- **Props**: label (string), value (number), icon (optional), loading (boolean).
-- **Features**: Loading skeleton state, number formatting with `toLocaleString()`.
-- **Styling**: Responsive with Tailwind utility classes.
+### 2. Navigation Configuration (`app/config/navigation.ts`)
+- **Purpose**: Centralized definition of sidebar menu items.
+- **Features**: Support for icons (Lucide), labels (Vietnamese), and nested children (dropdowns).
+- **Items**: Dashboard, Manga Management (List, Add), User Management, Settings.
 
-### 3. Dashboard Page (`app/pages/index.vue`)
+### 3. Statistics Integration (`app/pages/index.vue`)
 - **Purpose**: Main admin dashboard displaying 4 stat cards.
 - **Layout**: Responsive grid (2-col mobile, 4-col desktop).
-- **Cards**: Members, Mangas, Chapters, Pets with Vietnamese labels.
-- **State**: Integrated with `useStatistics` composable, handles loading/error states.
-- **UI**: "Thông tin chung" header with UCard and UContainer components.
+- **Cards**: Integrated with `useStatistics` composable for real-time data fetching.
+- **UI**: Uses `UCard` and `StatCard` components with loading/error states.
 
 ## Previous Implementations
 

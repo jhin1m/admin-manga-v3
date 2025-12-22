@@ -1,6 +1,6 @@
 # Project Overview & Product Development Requirements (PDR)
 
-**Project**: Admin Manga v3 | **Last Updated**: 2025-12-21 | **Current Phase**: Phase 04 - Route Middleware
+**Project**: Admin Manga v3 | **Last Updated**: 2025-12-22 | **Current Phase**: Phase 06 - Admin Dashboard
 
 ---
 
@@ -76,13 +76,15 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 ### FR-002: Dashboard
 - **Description**: Display overview of system statistics
 - **Acceptance Criteria**:
-  - Total users count
-  - Total manga count
-  - Total chapters count
-  - Recent activity feed (future)
-  - Quick action buttons
+  - Sidebar navigation with collapsible state (Implemented Phase 06)
+  - Keyboard shortcut 'C' for sidebar toggle (Implemented Phase 06)
+  - Total users count ✓
+  - Total manga count ✓
+  - Total chapters count ✓
+  - Total companions (pets) count ✓
+  - Loading and error states for data fetching ✓
 - **Priority**: P1 (High)
-- **Phase**: Phase 04
+- **Phase**: Phase 06 (Completed)
 
 ### FR-003: Manga Management
 - **Description**: Admins manage manga catalog
@@ -260,24 +262,26 @@ Create a modern, user-friendly admin panel for managing manga content. The appli
 - **Estimated Timeline**: 1 week
 - **Dependencies**: Phase 02 (auth composable)
 
-### Phase 04 - Admin Dashboard
+### Phase 04 - Admin Dashboard (Completed)
 - **Deliverables**:
-  - Dashboard overview page
-  - Manga list + CRUD
-  - Chapter management
-  - Basic user management
-  - Statistics widget
+  - Dashboard overview page ✓
+  - Statistics widget ✓
+  - Navigation menu config ✓
+  - Sidebar layout implementation ✓
 
-- **Estimated Timeline**: 2-3 weeks
+- **Timeline**: 2025-12-22
+- **Status**: Completed
 - **Dependencies**: Phase 02-03 (auth + UI)
 
-### Phase 06+ - Advanced Features
-- User management
-- Content moderation
-- Reports system
-- Analytics
-- Bulk operations
+### Phase 06 - Sidebar & Professional Layout (Completed)
+- **Deliverables**:
+  - Collapsible/Resizable sidebar ✓
+  - Keyboard shortcuts ('C') ✓
+  - Centralized navigation config ✓
+  - Integrated theme toggle & user logout in sidebar ✓
 
+- **Timeline**: 2025-12-22
+- **Status**: Completed
 ---
 
 ## Success Metrics

@@ -14,7 +14,7 @@ const cards = computed(() => [
 </script>
 
 <template>
-  <UContainer>
+  <div class="p-6">
     <UCard>
       <template #header>
         <h2 class="font-semibold">
@@ -43,5 +43,5 @@ const cards = computed(() => [
         />
       </div>
     </UCard>
-  </UContainer>
+  </div>
 </template>
