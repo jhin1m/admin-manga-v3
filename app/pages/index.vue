@@ -16,7 +16,7 @@ const cards = computed(() => [
 <template>
   <div class="p-6 space-y-6">
     <!-- Welcome Header -->
-    <div class="mx-6">
+    <div class="m-6">
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
         Chào mừng quay trở lại!
       </h1>
@@ -33,25 +33,13 @@ const cards = computed(() => [
         </h2>
       </template>
 
-      <div
-        v-if="stats.error.value"
-        class="text-red-500"
-      >
+      <div v-if="stats.error.value" class="text-red-500">
         {{ stats.error.value }}
       </div>
 
-      <div
-        v-else
-        class="grid grid-cols-2 lg:grid-cols-4 gap-6"
-      >
-        <DashboardStatCard
-          v-for="card in cards"
-          :key="card.label"
-          :label="card.label"
-          :value="card.value"
-          :icon="card.icon"
-          :loading="stats.isLoading.value"
-        />
+      <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <DashboardStatCard v-for="card in cards" :key="card.label" :label="card.label" :value="card.value"
+          :icon="card.icon" :loading="stats.isLoading.value" />
       </div>
     </UCard>
   </div>
