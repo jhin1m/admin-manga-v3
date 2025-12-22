@@ -282,37 +282,41 @@ definePageMeta({ layout: 'custom-layout' })
 ```ts
 // app/composables/use-auth.ts
 export const useAuth = () => {
+  // Use cookie for SSR-safe token storage
+  const tokenCookie = useCookie<string | null>('admin_token', {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/'
+  })
+
   // State (using useState for SSR safety)
-  const token = useState<string | null>('auth_token', () => null)
   const user = useState<User | null>('auth_user', () => null)
   const isLoading = useState('auth_loading', () => false)
 
   // Computed
-  const isAuthenticated = computed(() => !!token.value)
+  const isAuthenticated = computed(() => !!tokenCookie.value)
 
   // Methods
   const login = async (credentials) => {
-    // API call + token storage
+    // API call + cookie storage
+    tokenCookie.value = res.data.token
   }
 
   const logout = () => {
-    token.value = null
+    tokenCookie.value = null
     user.value = null
-    if (import.meta.client) {
-      localStorage.removeItem('admin_token')
-    }
     navigateTo('/login')
   }
 
   const init = () => {
-    if (import.meta.client) {
-      const stored = localStorage.getItem('admin_token')
-      if (stored) token.value = stored
+    if (tokenCookie.value) {
+      fetchProfile()
     }
   }
 
   return {
-    token: readonly(token),
+    token: readonly(tokenCookie),
     user: readonly(user),
     isAuthenticated,
     login,
@@ -410,19 +414,31 @@ describe('useAuth', () => {
 
 ## Security Patterns
 
-### localStorage Usage
-Only on client side:
+### Cookie-based Authentication
+Use `useCookie` for SSR-safe token storage:
 ```ts
-if (import.meta.client) {
-  localStorage.setItem('key', value)
-  const value = localStorage.getItem('key')
-}
+const tokenCookie = useCookie<string | null>('admin_token', {
+  maxAge: 60 * 60 * 24 * 7, // 7 days
+  sameSite: 'lax',
+  secure: process.env.NODE_ENV === 'production',
+  path: '/'
+})
 ```
 
-### Auth Token Storage
-- Store in localStorage (current: Phase 05 stub)
-- Future: Consider httpOnly cookies (Phase 02)
-- Clear on logout (implemented in useAuth)
+### Security Headers
+Apply security headers in `nuxt.config.ts`:
+```ts
+routeRules: {
+  '/**': {
+    headers: {
+      'Content-Security-Policy': "default-src 'self'; ...",
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY'
+    }
+  }
+}
+```
 
 ### XSS Prevention
 - Nuxt UI components auto-escape content

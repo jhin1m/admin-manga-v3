@@ -30,15 +30,15 @@ const state = reactive({
 // Custom validation - chỉ validate khi field đã có giá trị
 function validate(state: Partial<Schema>) {
   const errors = []
-  
+
   if (touched.email && state.email && !z.string().email().safeParse(state.email).success) {
     errors.push({ path: 'email', message: 'Invalid email address' })
   }
-  
+
   if (touched.password && state.password && state.password.length < 8) {
     errors.push({ path: 'password', message: 'Password must be at least 8 characters' })
   }
-  
+
   return errors
 }
 
@@ -50,7 +50,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     touched.password = true
     return
   }
-  
+
   const success = await auth.login(event.data)
   if (success) {
     navigateTo('/')
@@ -63,8 +63,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
     <UCard class="w-full max-w-md">
       <template #header>
         <div class="text-center">
-          <h1 class="text-2xl font-bold">Admin Login</h1>
-          <p class="text-sm text-muted mt-1">Sign in to manage your manga</p>
+          <h1 class="text-2xl font-bold">
+            Admin Login
+          </h1>
+          <p class="text-sm text-muted mt-1">
+            Sign in to manage your manga
+          </p>
         </div>
       </template>
 
@@ -74,7 +78,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
         class="space-y-4"
         @submit="onSubmit"
       >
-        <UFormField label="Email" name="email">
+        <UFormField
+          label="Email"
+          name="email"
+        >
           <UInput
             v-model="state.email"
             type="email"
@@ -87,7 +94,10 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           />
         </UFormField>
 
-        <UFormField label="Password" name="password">
+        <UFormField
+          label="Password"
+          name="password"
+        >
           <UInput
             v-model="state.password"
             type="password"

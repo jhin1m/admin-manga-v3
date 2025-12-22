@@ -23,21 +23,24 @@ export function useAuth() {
   const config = useRuntimeConfig()
   const toast = useToast()
 
+  // Use cookie for SSR-safe token storage
+  const tokenCookie = useCookie<string | null>(TOKEN_KEY, {
+    maxAge: 60 * 60 * 24 * 7, // 7 days
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/'
+  })
+
   // State - using useState for SSR safety
-  const token = useState<string | null>('auth_token', () => null)
   const user = useState<User | null>('auth_user', () => null)
   const isLoading = useState('auth_loading', () => false)
 
-  const isAuthenticated = computed(() => !!token.value)
+  const isAuthenticated = computed(() => !!tokenCookie.value)
 
-  // Restore token from localStorage (client only)
+  // Initialize user profile if token exists
   function init() {
-    if (import.meta.client) {
-      const stored = localStorage.getItem(TOKEN_KEY)
-      if (stored && stored.length > 10) {
-        token.value = stored
-        fetchProfile()
-      }
+    if (tokenCookie.value) {
+      fetchProfile()
     }
   }
 
@@ -54,12 +57,8 @@ export function useAuth() {
         }
       )
 
-      token.value = res.data.token
+      tokenCookie.value = res.data.token
       await fetchProfile()
-
-      if (import.meta.client) {
-        localStorage.setItem(TOKEN_KEY, res.data.token)
-      }
 
       toast.add({ title: 'Login successful', color: 'success' })
       return true
@@ -75,11 +74,11 @@ export function useAuth() {
 
   // Get profile
   async function fetchProfile() {
-    if (!token.value) return
+    if (!tokenCookie.value) return
     try {
       const res = await $fetch<ApiResponse<User>>('/auth', {
         baseURL: config.public.apiBase,
-        headers: { Authorization: `Bearer ${token.value}` }
+        headers: { Authorization: `Bearer ${tokenCookie.value}` }
       })
       user.value = res.data
     } catch (error: unknown) {
@@ -93,29 +92,26 @@ export function useAuth() {
 
   // Logout
   async function logout() {
-    if (token.value) {
+    if (tokenCookie.value) {
       try {
         await $fetch('/auth', {
           baseURL: config.public.apiBase,
           method: 'DELETE',
-          headers: { Authorization: `Bearer ${token.value}` }
+          headers: { Authorization: `Bearer ${tokenCookie.value}` }
         })
       } catch {
         // Ignore errors on logout
       }
     }
 
-    token.value = null
+    tokenCookie.value = null
     user.value = null
-    if (import.meta.client) {
-      localStorage.removeItem(TOKEN_KEY)
-    }
 
     navigateTo('/login')
   }
 
   return {
-    token: readonly(token),
+    token: readonly(tokenCookie),
     user: readonly(user),
     isAuthenticated,
     isLoading: readonly(isLoading),
