@@ -1,10 +1,10 @@
 import type { ApiResponse } from '~/utils/api'
 
 interface DashboardStats {
-  total_users: number
-  total_mangas: number
-  total_chapters: number
-  total_pets: number
+  user_count: number
+  manga_count: number
+  chapter_count: number
+  pet_count: number
 }
 
 export function useStatistics() {
@@ -26,10 +26,7 @@ export function useStatistics() {
         baseURL: config.public.apiBase,
         headers: { Authorization: `Bearer ${auth.token.value}` }
       })
-      stats.value = {
-        ...res.data,
-        total_pets: res.data.total_pets ?? 0
-      }
+      stats.value = res.data
     } catch (e: unknown) {
       error.value = 'Failed to load statistics'
       console.error('Stats fetch error:', e)

@@ -37,13 +37,14 @@ defineShortcuts({
         </template>
 
         <!-- Navigation Menu -->
-        <UNavigationMenu
-          :items="navigationItems"
-          :collapsed="collapsed"
-          orientation="vertical"
-          :highlight="true"
-          class="flex-1"
-        />
+<div class="mt-6 flex-1"> 
+  <UNavigationMenu
+    :items="navigationItems"
+    :collapsed="collapsed"
+    orientation="vertical"
+    :highlight="true"
+  />
+</div>
 
         <!-- Footer: User Info + Actions -->
         <template #footer>

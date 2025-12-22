@@ -27,16 +27,24 @@ const state = reactive({
   password: ''
 })
 
-// Custom validation - chỉ validate khi field đã có giá trị
+// Custom validation
 function validate(state: Partial<Schema>) {
   const errors = []
 
-  if (touched.email && state.email && !z.string().email().safeParse(state.email).success) {
-    errors.push({ path: 'email', message: 'Invalid email address' })
+  if (touched.email) {
+    if (!state.email) {
+      errors.push({ path: 'email', message: 'Email is required' })
+    } else if (!z.string().email().safeParse(state.email).success) {
+      errors.push({ path: 'email', message: 'Invalid email address' })
+    }
   }
 
-  if (touched.password && state.password && state.password.length < 8) {
-    errors.push({ path: 'password', message: 'Password must be at least 8 characters' })
+  if (touched.password) {
+    if (!state.password) {
+      errors.push({ path: 'password', message: 'Password is required' })
+    } else if (state.password.length < 8) {
+      errors.push({ path: 'password', message: 'Password must be at least 8 characters' })
+    }
   }
 
   return errors
