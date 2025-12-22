@@ -1,6 +1,6 @@
 # Codebase Summary - Admin Manga v3
 
-**Last Updated**: 2025-12-21 | **Phase**: Phase 04 - Route Middleware
+**Last Updated**: 2025-12-22 | **Phase**: Phase 06 - Admin Dashboard
 
 ## Project Overview
 
@@ -23,11 +23,12 @@ app/
 ├── app.vue                # Main entry point (NuxtLayout + NuxtPage)
 ├── app.config.ts         # Theme & UI configuration
 ├── assets/                # Global styles and static assets
-├── components/           # Auto-imported Vue components
-├── composables/          # Shared logic (useAuth, etc.)
+├── components/
+│   └── dashboard/        # Dashboard-specific components (StatCard)
+├── composables/          # Shared logic (useAuth, useStatistics)
 ├── layouts/              # UI wrappers (default, auth)
 ├── middleware/           # Route guards (auth.global, guest)
-├── pages/                # Route-based components
+├── pages/                # Route-based components (dashboard, login)
 ├── plugins/              # Client/Server side plugins
 └── utils/                # Helper functions (api client)
 
@@ -36,18 +37,42 @@ plans/                    # Planning and reports
 vitest.config.ts          # Test configuration
 ```
 
-## Recent Implementation: Phase 04 (Route Middleware)
+## Recent Implementation: Phase 06 (Admin Dashboard)
 
-### 1. Global Authentication Guard (`app/middleware/auth.global.ts`)
+### 1. Statistics Composable (`app/composables/use-statistics.ts`)
+- **Purpose**: Fetch dashboard statistics from `/api/admin/statics/basic` endpoint.
+- **State Management**: SSR-safe with `useState` for stats, loading, and error states.
+- **Authentication**: Uses Bearer token from `useAuth` composable.
+- **Error Handling**: Graceful error messages with loading states.
+- **Data**: Fetches total_users, total_mangas, total_chapters, total_pets (placeholder if missing).
+
+### 2. StatCard Component (`app/components/dashboard/StatCard.vue`)
+- **Purpose**: Reusable stat display card with label and value.
+- **Props**: label (string), value (number), icon (optional), loading (boolean).
+- **Features**: Loading skeleton state, number formatting with `toLocaleString()`.
+- **Styling**: Responsive with Tailwind utility classes.
+
+### 3. Dashboard Page (`app/pages/index.vue`)
+- **Purpose**: Main admin dashboard displaying 4 stat cards.
+- **Layout**: Responsive grid (2-col mobile, 4-col desktop).
+- **Cards**: Members, Mangas, Chapters, Pets with Vietnamese labels.
+- **State**: Integrated with `useStatistics` composable, handles loading/error states.
+- **UI**: "Thông tin chung" header with UCard and UContainer components.
+
+## Previous Implementations
+
+### Phase 04 (Route Middleware)
+
+#### 1. Global Authentication Guard (`app/middleware/auth.global.ts`)
 - **Behavior**: Protects all routes except `/login`.
 - **SSR Safety**: Uses a dual-check strategy. On the client, it checks `localStorage` directly to prevent flashes during hydration. On the server, it checks the reactive state.
 - **Redirection**: Automatically sends unauthenticated users to `/login`.
 
-### 2. Guest Guard (`app/middleware/guest.ts`)
+#### 2. Guest Guard (`app/middleware/guest.ts`)
 - **Behavior**: Prevents authenticated users from accessing the login page.
 - **Redirection**: Sends users back to the dashboard if a token is detected.
 
-### 3. Middleware Testing (`app/middleware/middleware.test.ts`)
+#### 3. Middleware Testing (`app/middleware/middleware.test.ts`)
 - **Strategy**: Unit tests middleware logic by exporting pure functions.
 - **Coverage**: Achieved 100% code coverage for auth and guest logic.
 
@@ -66,4 +91,5 @@ vitest.config.ts          # Test configuration
 - [x] Phase 03: Login Page UI & Validation
 - [x] Phase 04: Route Middleware & Global Guards
 - [x] Phase 05: Layout System Separation
-- [ ] Phase 06: Admin Dashboard & Manga Management
+- [x] Phase 06: Admin Dashboard & Statistics Display
+- [ ] Phase 07+: Manga Management Features
