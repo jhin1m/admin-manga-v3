@@ -123,28 +123,41 @@ List all users
 **Response**:
 ```json
 {
-  "success": true,
-  "data": {
+    "status": 200,
+    "success": true,
     "data": [
-      {
-        "id": "uuid-123",
-        "name": "User Name",
-        "email": "user@example.com",
-        "avatar_full_url": "https://...",
-        "total_points": 100,
-        "used_points": 50,
-        "banned_until": "2025-01-01T00:00:00.000000Z",
-        "created_at": "2024-01-01T00:00:00.000000Z",
-        "roles": [{ "name": "admin" }]
-      }
+        {
+            "id": "cf62c5f3-51df-4168-8d8f-490b1dc32ad8",
+            "name": "Ch\u00ed Cao Th\u1ea7n",
+            "email": "nguyenhao83dn@gmail.com",
+            "google_id": "115166107397551614550",
+            "email_verified_at": null,
+            "total_points": 45,
+            "used_points": 0,
+            "achievements_points": 45,
+            "exp": 90,
+            "level": 1,
+            "last_reading_check": "2025-12-14T12:05:34.000000Z",
+            "pet_id": null,
+            "achievement_id": null,
+            "banned_until": null,
+            "limit_pet_points": 155,
+            "limit_achievement_points": 255,
+            "created_at": "2025-12-14T12:07:58.000000Z",
+            "updated_at": "2025-12-14T12:15:34.000000Z",
+            "avatar_full_url": "http:\/\/127.0.0.1:8000\/storage\/images\/avatars\/WXDtxqfQ7rbpt0z5bqoZma0av0vY5Fw9OFUK0Qze.jpg"
+        }
     ],
-    "meta": {
-      "current_page": 1,
-      "last_page": 5,
-      "per_page": 20,
-      "total": 100
+    "pagination": {
+        "count": 50,
+        "total": 49724,
+        "perPage": 50,
+        "currentPage": 1,
+        "totalPages": 995,
+        "links": {
+            "next": "http:\/\/127.0.0.1:8000\/api\/admin\/users?per_page=50&sort=-created_at&page=2"
+        }
     }
-  }
 }
 ```
 

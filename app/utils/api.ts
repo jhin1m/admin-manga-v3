@@ -3,6 +3,23 @@ export interface ApiResponse<T> {
   success: boolean
   data: T
   code: number
+  status?: number
+}
+
+export interface Pagination {
+  count: number
+  total: number
+  perPage: number
+  currentPage: number
+  totalPages: number
+  links?: {
+    next?: string | null
+    prev?: string | null
+  }
+}
+
+export interface PaginatedApiResponse<T> extends ApiResponse<T[]> {
+  pagination: Pagination
 }
 
 export interface ApiError {
@@ -15,11 +32,17 @@ export interface ApiError {
 // API client factory with Bearer token injection
 export function useApi() {
   const config = useRuntimeConfig()
+  const auth = useAuth()
 
-  // Note: useAuth will be created in phase 02
-  // For now, create the API client without auth header injection
   return $fetch.create({
     baseURL: config.public.apiBase,
+    onRequest({ options }) {
+      if (auth.token.value) {
+        const headers = new Headers(options.headers)
+        headers.set('Authorization', `Bearer ${auth.token.value}`)
+        options.headers = headers
+      }
+    },
     onResponseError({ response }) {
       // Handle API errors
       const error = response._data as ApiError
@@ -29,3 +52,4 @@ export function useApi() {
     }
   })
 }
+
