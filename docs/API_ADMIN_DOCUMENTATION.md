@@ -2,12 +2,35 @@
 
 ## Overview
 
-**URL**: `http://127.0.0.1:8000`
 **Base URL**: `/api/admin`
 **Authentication**: Bearer Token
 **Content Type**: `application/json`
 
 All admin endpoints require authentication except the login endpoint. The API uses throttle exemption for admin routes.
+
+## Standard Query Parameters
+
+Most `GET` endpoints that return a list of resources (e.g., `/api/admin/users`, `/api/admin/mangas`) support the following standard query parameters provided by the dynamic query builder:
+
+### Pagination
+- `page` (int): The page number to retrieve. Default: `1`.
+- `per_page` (int): Number of items per page. Default: `20`.
+
+### Sorting
+- `sort` (string): Field to sort by. Prepend a minus sign `-` for descending order.
+- Examples: 
+  - `sort=created_at` (Oldest first)
+  - `sort=-created_at` (Newest first)
+
+### Filtering
+- `filter[field]` (mixed): Filter results by a specific field.
+- Multiple filters can be combined: `filter[status]=ongoing&filter[is_reviewed]=1`
+- Example: `filter[id]=cf62c5f3-51df-4168-8d8f-490b1dc32ad8`
+
+### Including Relationships
+- `include` (string): Comma-separated list of relationships to include in the response.
+- Example: `include=genres,latest_chapter`
+
 
 ## Authentication
 
@@ -88,8 +111,14 @@ List all users
 **Query Parameters**:
 - `page` (int): Page number
 - `per_page` (int): Items per page
-- `sort` (string): Sort field
-- `filter` (object): Filter criteria
+- `sort` (string): Sort field (`id`, `created_at`, `updated_at`)
+- `filter[id]` (uuid): Filter by user ID
+- `filter[name]` (string): Filter by name
+- `filter[email]` (string): Filter by email
+- `filter[role]` (string): Filter by role
+- `include` (string): Relationships to include (`pet`, `pets`, `achievements`, `roles`)
+
+**Example**: `/api/admin/users?page=1&per_page=50&sort=-created_at&filter[id]=cf62c5f3-51df-4168-8d8f-490b1dc32ad8`
 
 **Response**:
 ```json
@@ -101,11 +130,20 @@ List all users
         "id": "uuid-123",
         "name": "User Name",
         "email": "user@example.com",
-        "created_at": "2024-01-01T00:00:00.000000Z"
+        "avatar_full_url": "https://...",
+        "total_points": 100,
+        "used_points": 50,
+        "banned_until": "2025-01-01T00:00:00.000000Z",
+        "created_at": "2024-01-01T00:00:00.000000Z",
+        "roles": [{ "name": "admin" }]
       }
     ],
-    "current_page": 1,
-    "total": 100
+    "meta": {
+      "current_page": 1,
+      "last_page": 5,
+      "per_page": 20,
+      "total": 100
+    }
   }
 }
 ```
@@ -152,7 +190,22 @@ Delete user comment
 ### GET /api/admin/mangas
 List mangas
 
-**Query Parameters**: Standard pagination and filtering
+**Query Parameters**:
+- `page` (int): Page number
+- `per_page` (int): Items per page
+- `sort` (string): Sort field (`updated_at`, `created_at`, `name`, `views`, `average_rating`, etc.)
+- `filter[id]` (uuid): Filter by ID
+- `filter[name]` (string): Filter by name (searches name and alt name)
+- `filter[status]` (string): Filter by status (`ongoing`, `completed`, etc.)
+- `filter[group_id]` (uuid): Filter by group
+- `filter[user_id]` (uuid): Filter by uploader
+- `filter[artist_id]` (uuid): Filter by artist
+- `filter[is_reviewed]` (boolean): Filter by review status
+- `filter[search]` (string): Search scope
+- `filter[accept_genres]` (array): Filter by included genres
+- `filter[reject_genres]` (array): Filter by excluded genres
+- `include` (string): Relationships to include (`genres`, `latest_chapter`, `first_chapter`, `user`, `artist`, `group`, etc.)
+
 
 **Response**:
 ```json
@@ -218,6 +271,14 @@ Delete manga
 
 ### GET /api/admin/chapters
 List chapters
+
+**Query Parameters**: Standard pagination and filtering
+- `sort`: `updated_at`, `created_at`, `name`, `views`, `order`
+- `filter[id]`: Filter by ID
+- `filter[name]`: Filter by name
+- `filter[manga_id]`: Filter by manga ID
+- `filter[user_id]`: Filter by uploader ID
+- `include`: `user`, `manga`
 
 ### GET /api/admin/chapters/{id}
 Get chapter details
@@ -286,6 +347,11 @@ Delete multiple chapters
 ### GET /api/admin/genres
 List genres
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[id]`: Filter by ID
+- `filter[name]`: Filter by name
+- `filter[slug]`: Filter by slug
+
 **Response**:
 ```json
 {
@@ -328,6 +394,11 @@ Delete genre
 ### GET /api/admin/artists
 List artists
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[id]`: Filter by ID
+- `filter[name]`: Filter by name
+- `include`: `user`
+
 **Response**:
 ```json
 {
@@ -368,6 +439,12 @@ Delete artist
 ### GET /api/admin/groups
 List groups
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[id]`: Filter by ID
+- `filter[name]`: Filter by name
+- `filter[user_id]`: Filter by uploader ID
+- `include`: `user`
+
 ### GET /api/admin/groups/{id}
 Get group details
 
@@ -394,6 +471,12 @@ Delete group
 ### GET /api/admin/doujinshis
 List doujinshis
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[id]`: Filter by ID
+- `filter[name]`: Filter by name
+- `filter[user_id]`: Filter by uploader ID
+- `include`: `user`
+
 ### GET /api/admin/doujinshis/{id}
 Get doujinshi details
 
@@ -412,6 +495,13 @@ Delete doujinshi
 
 ### GET /api/admin/comments
 List comments
+
+**Query Parameters**: Standard pagination and filtering
+- `sort`: `updated_at`, `created_at`
+- `filter[username]`: Search by username (scope)
+- `filter[created_at_start]`: Start date filter (scope)
+- `filter[created_at_end]`: End date filter (scope)
+- `include`: `user`, `commentable`, `parent`, `childes`
 
 ### GET /api/admin/comments/{id}
 Get comment details
@@ -432,6 +522,11 @@ Delete comment
 ### GET /api/admin/achievements
 List achievements
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[name]`: Filter by name
+- `filter[user_id]`: Filter by user ID
+- `include`: `user`
+
 ### GET /api/admin/achievements/{id}
 Get achievement details
 
@@ -451,6 +546,11 @@ Delete achievement
 ### GET /api/admin/pets
 List pets
 
+**Query Parameters**: Standard pagination and filtering
+- `filter[name]`: Filter by name
+- `filter[user_id]`: Filter by user ID
+- `include`: `user`
+
 ### GET /api/admin/pets/{id}
 Get pet details
 
@@ -462,6 +562,33 @@ Update pet
 
 ### DELETE /api/admin/pets/{id}
 Delete pet
+
+## Advertisement Management
+
+**Permissions**: Admin only
+
+### GET /api/admin/advertisements
+List advertisements
+
+**Query Parameters**: Standard pagination and filtering
+- `sort`: `id`, `name`, `type`, `location`, `order`, `is_active`, `created_at`, `updated_at`
+- `filter[name]`: Filter by name
+- `filter[type]`: Filter by type
+- `filter[location]`: Filter by location
+- `filter[position]`: Filter by position
+- `filter[is_active]`: Filter by active status (0/1)
+
+### GET /api/admin/advertisements/{id}
+Get advertisement details
+
+### POST /api/admin/advertisements
+Create advertisement
+
+### PUT /api/admin/advertisements/{id}
+Update advertisement
+
+### DELETE /api/admin/advertisements/{id}
+Delete advertisement
 
 ## Static/System Management
 
@@ -510,20 +637,17 @@ Update site announcement
 **Permissions**: Admin only
 
 ### GET /api/admin/chapter-reports
-List all chapter reports with filtering and pagination
+List all chapter reports
 
-**Query Parameters**:
-- `page` (int): Page number
-- `per_page` (int): Items per page (default: 20)
-- `sort` (string): Sort field (e.g., `-created_at`, `report_type`)
-  - Available sorts: `created_at`, `updated_at`, `report_type`
-- `filter[report_type]` (string): Filter by report type
+**Query Parameters**: Standard pagination and filtering
+- `sort`: `created_at`, `updated_at`, `report_type`
+- `filter[id]`: Filter by report ID
+- `filter[report_type]`: Filter by report type
   - Values: `broken_images`, `missing_images`, `wrong_order`, `wrong_chapter`, `duplicate`, `other`
-- `filter[chapter_id]` (uuid): Filter by chapter
-- `filter[manga_id]` (uuid): Filter by manga
-- `filter[user_id]` (uuid): Filter by user who reported
-- `include` (string): Include relationships (comma-separated)
-  - Available: `user`, `chapter`, `manga`
+- `filter[chapter_id]`: Filter by chapter ID
+- `filter[manga_id]`: Filter by manga ID
+- `filter[user_id]`: Filter by user ID who reported
+- `include`: `user`, `chapter`, `manga`
 
 **Response**:
 ```json
