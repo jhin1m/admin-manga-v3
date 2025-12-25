@@ -129,8 +129,7 @@ const perPageOptions = [
                 </div>
 
                 <!-- Table Section -->
-                <UCard
-                    :ui="{ body: { padding: 'p-0' }, root: 'overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm' }">
+                <UCard :ui="{ body: 'p-0', root: 'overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm' }">
                     <UTable :data="users" :columns="columns" :loading="isLoading" class="w-full">
                         <!-- Custom item rendering -->
                         <template #name-cell="{ row }">
@@ -140,10 +139,10 @@ const perPageOptions = [
                                 <div class="flex flex-col min-w-0">
                                     <span
                                         class="font-semibold text-gray-900 dark:text-white truncate max-w-[150px] lg:max-w-[250px]">{{
-                                        row.original.name }}</span>
+                                            row.original.name }}</span>
                                     <span
                                         class="text-[10px] text-gray-400 font-mono tracking-tighter truncate max-w-[150px]">{{
-                                        row.original.id }}</span>
+                                            row.original.id }}</span>
                                 </div>
                             </div>
                         </template>
@@ -162,7 +161,7 @@ const perPageOptions = [
                                         <UIcon name="i-lucide-gem" class="w-3.5 h-3.5 text-yellow-500" />
                                     </div>
                                     <span class="font-bold text-gray-900 dark:text-white">{{ row.original.total_points
-                                        }}</span>
+                                    }}</span>
                                 </div>
                                 <div class="text-[10px] text-gray-500 pl-6">Sử dụng: {{ row.original.used_points }}
                                 </div>
@@ -188,7 +187,8 @@ const perPageOptions = [
                                 <span class="text-gray-500 italic">{{ new
                                     Date(row.original.created_at).toLocaleTimeString('vi-VN', {
                                         hour: '2-digit', minute:
-                                    '2-digit' }) }}</span>
+                                            '2-digit'
+                                    }) }}</span>
                             </div>
                         </template>
 

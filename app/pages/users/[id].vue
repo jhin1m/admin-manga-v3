@@ -91,7 +91,7 @@ function formatDate(dateString?: string) {
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Left Column: Profile Card -->
                     <div class="lg:col-span-1 flex flex-col gap-8">
-                        <UCard :ui="{ body: { padding: 'p-0' } }"
+                        <UCard :ui="{ body: 'p-0' }"
                             class="overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm">
                             <div class="relative h-24 bg-gradient-to-r from-primary-500 to-indigo-600"></div>
                             <div class="px-6 pb-6 pt-0 flex flex-col items-center">
@@ -153,7 +153,7 @@ function formatDate(dateString?: string) {
                         </UCard>
 
                         <!-- Points Breakdown -->
-                        <UCard title="Kinh tế" :ui="{ header: { padding: 'px-6 py-4' } }"
+                        <UCard title="Kinh tế" :ui="{ header: 'px-6 py-4' }"
                             class="border-gray-200 dark:border-gray-800 shadow-sm">
                             <div class="space-y-6">
                                 <div>
@@ -180,7 +180,7 @@ function formatDate(dateString?: string) {
 
                     <!-- Right Column: Forms & Controls -->
                     <div class="lg:col-span-2 flex flex-col gap-8">
-                        <UCard title="Cài đặt thông tin" :ui="{ header: { padding: 'px-6 py-4' } }"
+                        <UCard title="Cài đặt thông tin" :ui="{ header: 'px-6 py-4' }"
                             class="border-gray-200 dark:border-gray-800 shadow-sm">
                             <UForm :schema="schema" :state="state" @submit="onSubmit" class="space-y-8">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
@@ -220,9 +220,10 @@ function formatDate(dateString?: string) {
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <UCard title="Vai trò & Quyền hạn" class="border-gray-200 dark:border-gray-800 shadow-sm">
                                 <div class="flex flex-wrap gap-2">
-                                    <UBadge v-for="role in user.roles || ['Member']" :key="role" color="primary"
+                                    <UBadge v-for="(role, index) in user.roles || ['Member']"
+                                        :key="typeof role === 'string' ? role : role.id" color="primary"
                                         variant="solid">
-                                        {{ role }}
+                                        {{ typeof role === 'string' ? role : role.name }}
                                     </UBadge>
                                     <UButton icon="i-lucide-plus" size="xs" variant="ghost" color="neutral" />
                                 </div>

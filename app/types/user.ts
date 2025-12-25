@@ -18,4 +18,5 @@ export interface User {
   created_at: string
   updated_at: string
   avatar_full_url: string
+  roles?: { id: number, name: string }[]
 }

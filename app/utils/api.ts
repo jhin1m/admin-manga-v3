@@ -18,9 +18,23 @@ export interface Pagination {
   }
 }
 
+export interface Meta {
+  current_page: number
+  from: number
+  to: number
+  total: number
+  per_page: number
+  last_page: number
+}
+
 export interface PaginatedApiResponse<T> extends ApiResponse<T[]> {
   pagination: Pagination
 }
+
+export interface LaravelPaginatedResponse<T> extends ApiResponse<{
+  data: T[]
+  meta: Meta
+}> {}
 
 export interface ApiError {
   success: false
