@@ -14,6 +14,13 @@ export interface Group {
   name: string
 }
 
+export interface Doujinshi {
+  id: string
+  name: string
+  created_at?: string
+  updated_at?: string
+}
+
 export interface Manga {
   id: string
   name: string

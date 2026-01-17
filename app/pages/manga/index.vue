@@ -223,13 +223,17 @@ const handleDelete = async (manga: Manga) => {
                             <!-- Info -->
                             <div class="flex-1 flex flex-col min-w-0">
                                 <div class="flex justify-between items-start gap-2">
-                                    <NuxtLink :to="`/manga/${manga.id}`"
+                                    <NuxtLink :to="`/manga/${manga.id}/edit`"
                                         class="font-bold text-gray-900 dark:text-white hover:text-primary-500 transition-colors line-clamp-2">
                                         {{ manga.name }}
                                     </NuxtLink>
 
-                                    <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs"
-                                        @click="handleDelete(manga)" />
+                                    <div class="flex items-center gap-1">
+                                        <UButton icon="i-lucide-edit" color="primary" variant="ghost" size="xs"
+                                            :to="`/manga/${manga.id}/edit`" />
+                                        <UButton icon="i-lucide-trash-2" color="error" variant="ghost" size="xs"
+                                            @click="handleDelete(manga)" />
+                                    </div>
                                 </div>
 
                                 <div v-if="manga.name_alt" class="text-xs text-gray-400 truncate mt-0.5">
