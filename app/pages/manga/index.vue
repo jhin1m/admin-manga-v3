@@ -1,15 +1,9 @@
 <script setup lang="ts">
 import type { Manga } from '~/types/manga'
-import { refDebounced } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
 const { fetchMangas, deleteManga } = useManga()
-const { fetchUsers } = useUsers()
-// Correcting the imports based on what I wrote in use-filters.ts
-const { fetchArtists: getArtists } = useArtists()
-const { fetchGroups: getGroups } = useGroups()
-const { fetchDoujinshis: getDoujinshis } = useDoujinshis()
 
 // Filter states
 const page = ref(Number(route.query.page) || 1)
@@ -21,23 +15,11 @@ const groupId = ref((route.query['filter[group_id]'] as string) || undefined)
 const doujinshiId = ref((route.query['filter[doujinshi_id]'] as string) || undefined)
 const isReviewed = ref(route.query['filter[is_reviewed]'] as string || undefined)
 
-// Selection states (for InputMenu objects)
+// Selection states (for autocomplete components)
 const userSelected = ref<{ label: string, value: string } | undefined>(undefined)
 const artistSelected = ref<{ label: string, value: string } | undefined>(undefined)
 const groupSelected = ref<{ label: string, value: string } | undefined>(undefined)
 const doujinshiSelected = ref<{ label: string, value: string } | undefined>(undefined)
-
-// Search terms for autocomplete
-const userSearchTerm = ref('')
-const artistSearchTerm = ref('')
-const groupSearchTerm = ref('')
-const doujinshiSearchTerm = ref('')
-
-// Debounced search terms (200ms delay)
-const userSearchDebounced = refDebounced(userSearchTerm, 200)
-const artistSearchDebounced = refDebounced(artistSearchTerm, 200)
-const groupSearchDebounced = refDebounced(groupSearchTerm, 200)
-const doujinshiSearchDebounced = refDebounced(doujinshiSearchTerm, 200)
 
 // Data fetching
 const { data: response, refresh, status } = await useAsyncData(
@@ -99,90 +81,11 @@ const handleReset = () => {
     artistSelected.value = undefined
     groupSelected.value = undefined
     doujinshiSelected.value = undefined
-    userSearchTerm.value = ''
-    artistSearchTerm.value = ''
-    groupSearchTerm.value = ''
-    doujinshiSearchTerm.value = ''
     isReviewed.value = undefined
     page.value = 1
     updateFilters()
     refresh()
 }
-
-// Autocomplete data fetching based on search terms
-const { data: usersData, status: usersStatus } = await useLazyAsyncData(
-    'users-autocomplete',
-    () => {
-        // Only search if term length > 2
-        if (userSearchDebounced.value.length > 2) {
-            return fetchUsers({
-                per_page: 20,
-                'filter[name]': userSearchDebounced.value
-            })
-        }
-        return Promise.resolve(null)
-    },
-    {
-        watch: [userSearchDebounced],
-        immediate: false
-    }
-)
-
-const { data: artistsData, status: artistsStatus } = await useLazyAsyncData(
-    'artists-autocomplete',
-    () => {
-        if (artistSearchDebounced.value.length > 2) {
-            return getArtists({
-                per_page: 20,
-                'filter[name]': artistSearchDebounced.value
-            })
-        }
-        return Promise.resolve(null)
-    },
-    {
-        watch: [artistSearchDebounced],
-        immediate: false
-    }
-)
-
-const { data: groupsData, status: groupsStatus } = await useLazyAsyncData(
-    'groups-autocomplete',
-    () => {
-        if (groupSearchDebounced.value.length > 2) {
-            return getGroups({
-                per_page: 20,
-                'filter[name]': groupSearchDebounced.value
-            })
-        }
-        return Promise.resolve(null)
-    },
-    {
-        watch: [groupSearchDebounced],
-        immediate: false
-    }
-)
-
-const { data: doujinshisData, status: doujinshisStatus } = await useLazyAsyncData(
-    'doujinshis-autocomplete',
-    () => {
-        if (doujinshiSearchDebounced.value.length > 2) {
-            return getDoujinshis({
-                per_page: 20,
-                'filter[name]': doujinshiSearchDebounced.value
-            })
-        }
-        return Promise.resolve(null)
-    },
-    {
-        watch: [doujinshiSearchDebounced],
-        immediate: false
-    }
-)
-
-const userItems = computed(() => usersData.value?.data?.map(u => ({ label: u.name, value: u.id })) || [])
-const artistItems = computed(() => artistsData.value?.data?.map(a => ({ label: a.name, value: a.id })) || [])
-const groupItems = computed(() => groupsData.value?.data?.map(g => ({ label: g.name, value: g.id })) || [])
-const doujinshiItems = computed(() => doujinshisData.value?.data?.map(d => ({ label: d.name, value: d.id })) || [])
 
 const reviewOptions = [
     { label: 'Tất cả', value: undefined },
@@ -257,31 +160,19 @@ const handleDelete = async (manga: Manga) => {
                         </UFormField>
 
                         <UFormField label="Người đăng">
-                            <UInputMenu v-model="userSelected" v-model:search-term="userSearchTerm"
-                                :items="userItems" :loading="usersStatus === 'pending'"
-                                placeholder="Nhập tên người đăng (tối thiểu 3 ký tự)..." icon="i-lucide-user"
-                                class="w-full" ignore-filter />
+                            <UserAutocompleteInput v-model="userSelected" />
                         </UFormField>
 
                         <UFormField label="Tác giả">
-                            <UInputMenu v-model="artistSelected" v-model:search-term="artistSearchTerm"
-                                :items="artistItems" :loading="artistsStatus === 'pending'"
-                                placeholder="Nhập tên tác giả (tối thiểu 3 ký tự)..." icon="i-lucide-pen-tool"
-                                class="w-full" ignore-filter />
+                            <ArtistAutocompleteInput v-model="artistSelected" />
                         </UFormField>
 
                         <UFormField label="Nhóm dịch">
-                            <UInputMenu v-model="groupSelected" v-model:search-term="groupSearchTerm"
-                                :items="groupItems" :loading="groupsStatus === 'pending'"
-                                placeholder="Nhập tên nhóm dịch (tối thiểu 3 ký tự)..." icon="i-lucide-users"
-                                class="w-full" ignore-filter />
+                            <GroupAutocompleteInput v-model="groupSelected" />
                         </UFormField>
 
                         <UFormField label="Doujinshi">
-                            <UInputMenu v-model="doujinshiSelected" v-model:search-term="doujinshiSearchTerm"
-                                :items="doujinshiItems" :loading="doujinshisStatus === 'pending'"
-                                placeholder="Nhập tên doujinshi (tối thiểu 3 ký tự)..." icon="i-lucide-book-heart"
-                                class="w-full" ignore-filter />
+                            <DoujinshiAutocompleteInput v-model="doujinshiSelected" />
                         </UFormField>
 
                         <UFormField label="Duyệt">
