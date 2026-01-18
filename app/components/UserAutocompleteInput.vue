@@ -43,7 +43,7 @@ watch(searchTerm, (newVal) => {
 // Sync modelValue with internal state
 const selected = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 // Fetch users based on debounced search term
@@ -52,7 +52,7 @@ const { data: usersData, status } = await useLazyAsyncData(
   () => {
     if (debouncedSearchTerm.value.length >= props.minSearchLength) {
       return fetchUsers({
-        per_page: 20,
+        'per_page': 20,
         'filter[name]': debouncedSearchTerm.value
       })
     }

@@ -35,7 +35,7 @@ export function useDoujinshis() {
   const api = useApi()
 
   async function fetchDoujinshis(params?: Record<string, any>) {
-    return await api<PaginatedApiResponse<{ id: string; name: string }>>('/doujinshis', {
+    return await api<PaginatedApiResponse<{ id: string, name: string }>>('/doujinshis', {
       method: 'GET',
       params
     })

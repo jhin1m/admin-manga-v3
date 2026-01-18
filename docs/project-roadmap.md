@@ -3,8 +3,8 @@
 ## Project Summary
 Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI v4. Provides authentication, manga CRUD operations, and admin dashboard capabilities.
 
-**Last Updated:** 2025-12-22
-**Overall Progress:** 100% (Phase 01-06 Complete)
+**Last Updated:** 2026-01-18
+**Overall Progress:** 100% (Phase 01-06 Complete) + Chapters Feature
 
 ---
 
@@ -180,6 +180,16 @@ Modern admin manga management application built with Nuxt 4, Vue 3, and Nuxt UI 
 
 ## Changelog
 
+### Version 1.0.0-alpha.5 (2026-01-18)
+- **Feature: Manga Chapters List** - COMPLETE
+  - Implemented chapters table in manga edit page (`app/pages/manga/[id]/edit/index.vue`)
+  - Created Chapter type interface with proper relations support
+  - Created useChapters composable with fetch, delete, and bulk delete methods
+  - Implemented MangaChaptersTable component with pagination, sorting, and CRUD actions
+  - Added error handling and loading states for API operations
+  - All TypeScript errors resolved, build passes, linting compliant
+  - Feature ready for production use
+
 ### Version 1.0.0-alpha.4 (2025-12-22)
 - **Phase 06: Dashboard Layout & Sidebar** - COMPLETE
   - Implemented collapsible sidebar navigation using Nuxt UI v4 Dashboard components
@@ -236,10 +246,28 @@ All prerequisites met to proceed with remaining phases.
 
 ## Next Steps (Priority Order)
 
-1. **Production Readiness Review**
+1. **Manga Chapters Feature Enhancements**
+   - Add test coverage for MangaChaptersTable component (critical path)
+   - Add test coverage for useChapters composable (all methods)
+   - Implement create/edit chapter page if not yet done
+   - Consider sortable columns if user requirements demand dynamic sorting
+
+2. **Related Features to Implement**
+   - Chapter detail/edit page (`/manga/[id]/chapters/[chapterId]/edit`)
+   - Bulk chapter operations (multi-delete if needed)
+   - Chapter publish/draft status management
+   - Chapter ordering drag-and-drop interface
+
+3. **Code Quality Improvements**
+   - Extract date formatting utilities to shared module
+   - Consolidate pagination constants across components
+   - Resolve composable duplication warnings (useArtists, useDoujinshis, useGroups)
+   - Increase overall test coverage from 49.6% to 80%+
+
+4. **Production Readiness Review**
    - Security audit of authentication flow
    - Performance testing of layout transitions
-   - Documentation update for new middleware patterns
+   - E2E testing for critical user workflows
 
 ---
 

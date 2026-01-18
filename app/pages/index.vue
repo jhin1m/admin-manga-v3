@@ -33,13 +33,25 @@ const cards = computed(() => [
         </h2>
       </template>
 
-      <div v-if="stats.error.value" class="text-red-500">
+      <div
+        v-if="stats.error.value"
+        class="text-red-500"
+      >
         {{ stats.error.value }}
       </div>
 
-      <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        <DashboardStatCard v-for="card in cards" :key="card.label" :label="card.label" :value="card.value"
-          :icon="card.icon" :loading="stats.isLoading.value" />
+      <div
+        v-else
+        class="grid grid-cols-2 lg:grid-cols-4 gap-6"
+      >
+        <DashboardStatCard
+          v-for="card in cards"
+          :key="card.label"
+          :label="card.label"
+          :value="card.value"
+          :icon="card.icon"
+          :loading="stats.isLoading.value"
+        />
       </div>
     </UCard>
   </div>

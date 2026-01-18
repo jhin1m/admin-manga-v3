@@ -70,9 +70,9 @@ const state = reactive({
 })
 
 // Selected items for autocomplete inputs
-const artistSelected = ref<{ label: string; value: string } | undefined>(undefined)
-const groupSelected = ref<{ label: string; value: string } | undefined>(undefined)
-const doujinshiSelected = ref<{ label: string; value: string } | undefined>(undefined)
+const artistSelected = ref<{ label: string, value: string } | undefined>(undefined)
+const groupSelected = ref<{ label: string, value: string } | undefined>(undefined)
+const doujinshiSelected = ref<{ label: string, value: string } | undefined>(undefined)
 
 // Sync selected items with state IDs
 watch([artistSelected, groupSelected, doujinshiSelected], () => {
@@ -158,7 +158,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <UForm :schema="schema" :state="state" @submit="onSubmit" class="space-y-8">
+  <UForm :schema="schema" :state="state" class="space-y-8" @submit="onSubmit">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Main Content Column -->
       <div class="lg:col-span-2 space-y-8">
@@ -172,7 +172,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               </h3>
               <UFormField name="is_hot">
                 <div class="flex items-center gap-2">
-                  <USwitch v-model="state.is_hot" id="is_hot" />
+                  <USwitch id="is_hot" v-model="state.is_hot" />
                   <label for="is_hot" class="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer">
                     Hot
                   </label>
@@ -181,13 +181,14 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             </div>
           </template>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-6">
             <UFormField label="Tên truyện" name="name" required description="Tên chính thức của truyện">
-              <UInput v-model="state.name" placeholder="Nhập tên truyện..." icon="i-lucide-book-open" size="lg" />
+              <UInput v-model="state.name" placeholder="Nhập tên truyện..." icon="i-lucide-book-open" size="lg"
+                class="w-full" />
             </UFormField>
 
             <UFormField label="Tên khác" name="name_alt" description="Các tên gọi khác, cách nhau bằng dấu phẩy">
-              <UInput v-model="state.name_alt" placeholder="Tên 1, Tên 2, Tên 3..." />
+              <UInput v-model="state.name_alt" placeholder="Tên 1, Tên 2, Tên 3..." class="w-full" />
               <template #hint>
                 <span class="text-xs text-gray-400">Tên gọi khác</span>
               </template>
@@ -197,16 +198,16 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               <DoujinshiAutocompleteInput v-model="doujinshiSelected" placeholder="Tìm kiếm doujinshi..." />
             </UFormField>
 
-            <UFormField label="Thể loại" name="genres" class="md:col-span-2">
-              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <UFormField label="Thể loại" name="genres">
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 max-h-[300px] overflow-y-auto pr-2">
                 <label v-for="genre in genres" :key="genre.id"
                   class="flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all" :class="[
                     isGenreSelected(genre.id)
                       ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300'
                       : 'border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700'
                   ]">
-                  <input type="checkbox" :checked="isGenreSelected(genre.id)" @change="toggleGenre(genre.id)"
-                    class="sr-only" />
+                  <input type="checkbox" :checked="isGenreSelected(genre.id)" class="sr-only"
+                    @change="toggleGenre(genre.id)">
                   <div class="w-4 h-4 rounded border flex items-center justify-center" :class="[
                     isGenreSelected(genre.id)
                       ? 'bg-primary-500 border-primary-500'
@@ -251,7 +252,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
           <div class="space-y-4">
             <div v-if="coverPreview"
               class="relative aspect-[2/3] max-w-[200px] mx-auto rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
-              <img :src="coverPreview" alt="Cover preview" class="w-full h-full object-cover" />
+              <img :src="coverPreview" alt="Cover preview" class="w-full h-full object-cover">
               <UButton icon="i-lucide-x" color="error" variant="solid" size="xs" class="absolute top-2 right-2"
                 @click="removeCover" />
             </div>
@@ -265,7 +266,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
               Tải ảnh lên
             </UButton>
             <input ref="coverInputRef" type="file" accept="image/jpeg,image/png,image/webp" class="hidden"
-              @change="handleCoverChange" />
+              @change="handleCoverChange">
 
             <p class="text-xs text-center text-gray-400">
               Định dạng: JPG, PNG, WebP | Tối đa: 2MB

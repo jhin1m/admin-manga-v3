@@ -35,9 +35,17 @@ async function handleSubmit(data: MangaFormData) {
 <template>
   <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar title="Thêm truyện mới" icon="i-lucide-plus-circle">
+      <UDashboardNavbar
+        title="Thêm truyện mới"
+        icon="i-lucide-plus-circle"
+      >
         <template #leading>
-          <UButton icon="i-lucide-arrow-left" variant="ghost" color="neutral" @click="router.back()" />
+          <UButton
+            icon="i-lucide-arrow-left"
+            variant="ghost"
+            color="neutral"
+            @click="router.back()"
+          />
         </template>
       </UDashboardNavbar>
     </template>

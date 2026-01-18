@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -108,22 +108,11 @@
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<a name='L46'></a><a href='#L46'>46</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -135,6 +124,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -145,6 +136,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,60 +154,58 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&lt;script setup lang="ts"&gt;
-<span class="cstat-no" title="statement not covered" >const stats = useStatistics()</span>
+const stats = useStatistics()
 &nbsp;
-onMounted(<span class="cstat-no" title="statement not covered" >() =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  stats.<span class="fstat-no" title="function not covered" >fetchStats()</span></span>
-}<span class="cstat-no" title="statement not covered" >)</span>
+<span class="cstat-no" title="statement not covered" >onMounted(() =&gt; {</span>
+  stats.<span class="cstat-no" title="statement not covered" >fetchStats(<span class="cstat-no" title="statement not covered" >)</span></span>
+}<span class="fstat-no" title="function not covered" >)</span>
 &nbsp;
-const cards = computed(() =&gt; [
-  { label: 'Thành viên', value: stats.stats.value?.total_users ?? 0, icon: 'i-lucide-users' },
-  { label: 'Tập truyện', value: stats.stats.value?.total_mangas ?? 0, icon: 'i-lucide-book-open' },
-  { label: 'Chương truyện', value: stats.stats.value?.total_chapters ?? 0, icon: 'i-lucide-layers' },
-  { label: 'Bạn đồng hành', value: stats.stats.value?.total_pets ?? 0, icon: 'i-lucide-heart' }
+<span class="cstat-no" title="statement not covered" >const cards = computed(() =&gt; [</span>
+  { label: 'Thành viên', value: stats.stats.value?.user_count ?? 0, icon: 'i-lucide-users' },
+  { label: 'Tập truyện', value: stats.stats.value?.manga_count ?? 0, icon: 'i-lucide-book-open' },
+  { label: 'Chương truyện', value: stats.stats.value?.chapter_count ?? 0, icon: 'i-lucide-layers' },
+  { label: 'Bạn đồng hành', value: stats.stats.value?.pet_count ?? 0, icon: 'i-lucide-heart' }
 ])
 &lt;/script&gt;
 &nbsp;
 &lt;template&gt;
-<span class="cstat-no" title="statement not covered" >  &lt;div class="p-6"&gt;</span>
+<span class="cstat-no" title="statement not covered" >  &lt;div class="p-6 space-y-6"&gt;</span>
+<span class="cstat-no" title="statement not covered" >    &lt;!-- Welcome Header --&gt;</span>
+    &lt;div class="m-6"&gt;
+      &lt;h1 class="text-2xl font-bold text-gray-900 dark:text-white"&gt;
+        Chào mừng quay trở lại!
+      &lt;/h1&gt;
+      &lt;p class="text-sm text-gray-500 dark:text-gray-400 mt-1"&gt;
+        Tổng quan hệ thống của bạn
+      &lt;/p&gt;
+    &lt;/div&gt;
+&nbsp;
+    &lt;!-- Stats Card --&gt;
     &lt;UCard&gt;
       &lt;template #header&gt;
         &lt;h2 class="font-semibold"&gt;
           Thông tin chung
-        &lt;/h2&gt;
+        &lt;/h2&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
       &lt;/template&gt;
 &nbsp;
-      &lt;div
-        v-if="stats.error.value"
-        class="text-red-500"
-      &gt;
+      &lt;div v-if="stats.error.value" class="text-red-500"&gt;
         {{ stats.error.value }}
       &lt;/div&gt;
 &nbsp;
-      &lt;div
-        v-else
-        class="grid grid-cols-2 lg:grid-cols-4 gap-6"
-      &gt;
-        &lt;StatCard
-          v-for="card in cards"
-          :key="card.label"
-          :label="card.label"
-          :value="card.value"
-          :icon="card.icon"
-          :loading="stats.isLoading.value"
-        /&gt;
+      &lt;div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-6"&gt;
+        &lt;DashboardStatCard v-for="card in cards" :key="card.label" :label="card.label" :value="card.value"
+          :icon="card.icon" :loading="stats.isLoading.value" /&gt;
       &lt;/div&gt;
     &lt;/UCard&gt;
   &lt;/div&gt;
-&lt;/template&gt;
-&nbsp;</pre></td></tr></table></pre>
+&lt;/template&gt;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-22T06:11:57.908Z
+                at 2026-01-18T04:14:15.142Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

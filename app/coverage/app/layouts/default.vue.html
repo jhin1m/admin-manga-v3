@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">91.66% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/12</span>
+                <span class='fraction'>12/13</span>
             </div>
         
             
@@ -117,21 +117,7 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -147,16 +133,11 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,22 +145,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,16 +187,11 @@ defineShortcuts({
   &lt;UApp&gt;
     &lt;UDashboardGroup&gt;
       &lt;!-- Left Sidebar --&gt;
-      &lt;UDashboardSidebar
-        v-model:collapsed="collapsed"
-        collapsible
-        resizable
-        class="bg-gray-50 dark:bg-gray-900"
-      &gt;
+      &lt;UDashboardSidebar v-model:collapsed="collapsed" collapsible resizable&gt;
         &lt;!-- Logo --&gt;
         &lt;template #header&gt;
-          &lt;NuxtLink to="/" class=<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >"flex items-center gap-2 p-4"&gt;</span></span>
-            &lt;AppLogo class="w-auto h-6 shrink-0" /&gt;
+          &lt;NuxtLink to="/" class="flex items-center gap-2 p-4"&gt;
+            &lt;AppLogo class="w-auto h-6 shrink-0" /&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
             &lt;span v-if="!collapsed" class="font-semibold"&gt;
               Admin Manga
             &lt;/span&gt;
@@ -232,13 +199,9 @@ defineShortcuts({
         &lt;/template&gt;
 &nbsp;
         &lt;!-- Navigation Menu --&gt;
-        &lt;UNavigationMenu
-          :items="navigationItems"
-          :collapsed="<span class="branch-0 cbranch-no" title="branch not covered" >collapsed"</span>
-          orientation="vertical"
-          :highlight="true"
-          class="flex-1"
-        /&gt;
+        &lt;div class="mt-6 flex-1"&gt;
+          &lt;UNavigationMenu :items="<span class="branch-0 cbranch-no" title="branch not covered" >navigationItems" :c</span>ollapsed="collapsed" orientation="vertical" :highlight="true" /&gt;
+        &lt;/div&gt;
 &nbsp;
         &lt;!-- Footer: User Info + Actions --&gt;
         &lt;template #footer&gt;
@@ -248,13 +211,8 @@ defineShortcuts({
             &lt;/div&gt;<span class="branch-1 cbranch-no" title="branch not covered" ></span>
             &lt;div class="flex items-center gap-2"&gt;
               &lt;UColorModeButton /&gt;
-              &lt;UButton
-                icon="i-lucide-log-out"
-                color="neutral"
-                variant="ghost"
-                :label="collapsed ? '' : 'Đăng xuất'"
-                @click="auth.logout<span class="branch-1 cbranch-no" title="branch not covered" >()"</span>
-              /&gt;
+              &lt;UButton icon="i-lucide-log-out" color="neutral" variant="ghost" :label="collapsed ? '' : 'Đăng xuất'"
+                @click="auth.logout<span class="branch-1 cbranch-no" title="branch not covered" >()" /&gt;</span>
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/template&gt;
@@ -274,7 +232,7 @@ defineShortcuts({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-12-22T06:11:57.908Z
+                at 2026-01-18T04:14:15.142Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
