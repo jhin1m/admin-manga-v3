@@ -24,9 +24,9 @@ export const navigationItems: NavItem[] = [
     icon: 'i-lucide-users',
     to: '/users'
   },
-  {
-    label: 'Cài đặt',
-    icon: 'i-lucide-settings',
-    to: '/settings'
-  }
+  // {
+  //   label: 'Cài đặt',
+  //   icon: 'i-lucide-settings',
+  //   to: '/settings'
+  // }
 ]

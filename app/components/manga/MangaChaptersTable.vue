@@ -236,7 +236,9 @@ watch(perPage, () => {
                 label: 'Xóa chapter',
                 icon: 'i-lucide-trash',
                 color: 'error',
-                click: () => openDeleteModal(row.original)
+                onSelect: (e: Event) => {
+                  openDeleteModal(row.original)
+                }
               }
             ]
           ]">
@@ -259,36 +261,34 @@ watch(perPage, () => {
     </UCard>
 
     <!-- Delete Confirmation Modal -->
-    <UModal v-model="deleteModal">
-      <UCard>
-        <template #header>
-          <div class="flex items-center gap-3">
-            <div class="p-2 rounded-lg bg-error-100 dark:bg-error-900/20">
-              <UIcon name="i-lucide-trash" class="w-5 h-5 text-error-500" />
-            </div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-              Xác nhận xóa chapter
-            </h3>
+    <UModal v-model:open="deleteModal">
+      <template #header>
+        <div class="flex items-center gap-3">
+          <div class="p-2 rounded-lg bg-error-100 dark:bg-error-900/20">
+            <UIcon name="i-lucide-trash" class="w-5 h-5 text-error-500" />
           </div>
-        </template>
-
-        <div class="py-4">
-          <p class="text-gray-600 dark:text-gray-400">
-            Bạn có chắc chắn muốn xóa chapter
-            <span class="font-semibold text-gray-900 dark:text-white">"{{ chapterToDelete?.name }}"</span>?
-          </p>
-          <p class="text-sm text-error-600 dark:text-error-400 mt-2">
-            Hành động này không thể hoàn tác.
-          </p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Xác nhận xóa chapter
+          </h3>
         </div>
+      </template>
 
-        <template #footer>
-          <div class="flex justify-end gap-3">
-            <UButton label="Hủy" color="neutral" variant="ghost" @click="deleteModal = false" />
-            <UButton label="Xóa chapter" color="error" @click="confirmDelete" />
-          </div>
-        </template>
-      </UCard>
+      <template #body>
+        <p class="text-gray-600 dark:text-gray-400">
+          Bạn có chắc chắn muốn xóa chapter
+          <span class="font-semibold text-gray-900 dark:text-white">"{{ chapterToDelete?.name }}"</span>?
+        </p>
+        <p class="text-sm text-error-600 dark:text-error-400 mt-2">
+          Hành động này không thể hoàn tác.
+        </p>
+      </template>
+
+      <template #footer>
+        <div class="flex justify-end gap-3">
+          <UButton label="Hủy" color="neutral" variant="ghost" @click="deleteModal = false" />
+          <UButton label="Xóa chapter" color="error" @click="confirmDelete" />
+        </div>
+      </template>
     </UModal>
   </div>
 </template>
