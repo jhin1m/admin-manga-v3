@@ -137,38 +137,19 @@ watch(perPage, () => {
           Quản lý các chapter của manga này.
         </p>
       </div>
-      <UButton
-        icon="i-lucide-plus"
-        label="Thêm chapter"
-        color="primary"
-        :to="`/manga/${mangaId}/chapters/create`"
-      />
+      <UButton icon="i-lucide-plus" label="Thêm chapter" color="primary" :to="`/manga/${mangaId}/chapters/create`" />
     </div>
 
     <!-- Pagination Toolbar -->
-    <div
-      v-if="!isLoading && chapters.length > 0"
-      class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm"
-    >
+    <div v-if="!isLoading && chapters.length > 0"
+      class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
       <div class="flex items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-        <UPagination
-          v-model:page="page"
-          :total="total"
-          :items-per-page="perPage"
-          show-edges
-          :show-controls="true"
-          size="sm"
-          class="shrink-0"
-        />
+        <UPagination v-model:page="page" :total="total" :items-per-page="perPage" show-edges :show-controls="true"
+          size="sm" class="shrink-0" />
 
         <div class="flex items-center gap-2 shrink-0 h-9 px-3 border-l border-gray-200 dark:border-gray-800">
           <span class="text-xs text-gray-500 font-medium whitespace-nowrap">Hiển thị:</span>
-          <USelect
-            v-model="perPage"
-            :options="perPageOptions"
-            class="w-20"
-            size="sm"
-          />
+          <USelect v-model="perPage" :options="perPageOptions" class="w-20" size="sm" />
         </div>
       </div>
     </div>
@@ -176,15 +157,9 @@ watch(perPage, () => {
     <!-- Table Section -->
     <UCard :ui="{ body: 'p-0', root: 'overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm' }">
       <!-- Error State -->
-      <div
-        v-if="hasError"
-        class="flex flex-col items-center justify-center py-16 px-4"
-      >
+      <div v-if="hasError" class="flex flex-col items-center justify-center py-16 px-4">
         <div class="p-4 rounded-full bg-error-100 dark:bg-error-900/20 mb-4">
-          <UIcon
-            name="i-lucide-alert-circle"
-            class="w-8 h-8 text-error-500"
-          />
+          <UIcon name="i-lucide-alert-circle" class="w-8 h-8 text-error-500" />
         </div>
         <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Lỗi khi tải dữ liệu
@@ -192,24 +167,13 @@ watch(perPage, () => {
         <p class="text-sm text-gray-500 mb-6 text-center max-w-md">
           Không thể tải danh sách chapters. Vui lòng thử lại.
         </p>
-        <UButton
-          icon="i-lucide-refresh-cw"
-          label="Thử lại"
-          color="primary"
-          @click="() => refresh()"
-        />
+        <UButton icon="i-lucide-refresh-cw" label="Thử lại" color="primary" @click="() => refresh()" />
       </div>
 
       <!-- Empty State -->
-      <div
-        v-else-if="!isLoading && chapters.length === 0"
-        class="flex flex-col items-center justify-center py-16 px-4"
-      >
+      <div v-else-if="!isLoading && chapters.length === 0" class="flex flex-col items-center justify-center py-16 px-4">
         <div class="p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-          <UIcon
-            name="i-lucide-book-open"
-            class="w-8 h-8 text-gray-400"
-          />
+          <UIcon name="i-lucide-book-open" class="w-8 h-8 text-gray-400" />
         </div>
         <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           Chưa có chapter nào
@@ -217,22 +181,11 @@ watch(perPage, () => {
         <p class="text-sm text-gray-500 mb-6 text-center max-w-md">
           Manga này chưa có chapter nào. Bắt đầu bằng cách thêm chapter đầu tiên.
         </p>
-        <UButton
-          icon="i-lucide-plus"
-          label="Thêm chapter"
-          color="primary"
-          :to="`/manga/${mangaId}/chapters/create`"
-        />
+        <UButton icon="i-lucide-plus" label="Thêm chapter" color="primary" :to="`/manga/${mangaId}/chapters/create`" />
       </div>
 
       <!-- Data Table -->
-      <UTable
-        v-else
-        :data="chapters"
-        :columns="columns"
-        :loading="isLoading"
-        class="w-full"
-      >
+      <UTable v-else :data="chapters" :columns="columns" :loading="isLoading" class="w-full">
         <!-- Name column -->
         <template #name-cell="{ row }">
           <div class="flex flex-col gap-1 py-1">
@@ -243,12 +196,7 @@ watch(perPage, () => {
 
         <!-- Order column -->
         <template #order-cell="{ row }">
-          <UBadge
-            color="neutral"
-            variant="subtle"
-            size="sm"
-            class="font-bold"
-          >
+          <UBadge color="neutral" variant="subtle" size="sm" class="font-bold">
             #{{ row.original.order }}
           </UBadge>
         </template>
@@ -256,11 +204,9 @@ watch(perPage, () => {
         <!-- Views column -->
         <template #views-cell="{ row }">
           <div class="flex items-center gap-1.5">
-            <UIcon
-              name="i-lucide-eye"
-              class="w-4 h-4 text-gray-400"
-            />
-            <span class="font-semibold text-gray-900 dark:text-white">{{ (row.original.views ?? 0).toLocaleString() }}</span>
+            <UIcon name="i-lucide-eye" class="w-4 h-4 text-gray-400" />
+            <span class="font-semibold text-gray-900 dark:text-white">{{ (row.original.views ?? 0).toLocaleString()
+              }}</span>
           </div>
         </template>
 
@@ -269,58 +215,46 @@ watch(perPage, () => {
           <div class="flex flex-col text-xs">
             <span class="text-gray-900 dark:text-white font-medium">{{ formatDate(row.original.created_at) }}</span>
             <span class="text-gray-500 italic">
-              {{ new Date(row.original.created_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) }}
+              {{ new Date(row.original.created_at).toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+              }}
             </span>
           </div>
         </template>
 
         <!-- Actions column -->
         <template #actions-cell="{ row }">
-          <UDropdownMenu
-            :items="[
-              [
-                {
-                  label: 'Sửa chapter',
-                  icon: 'i-lucide-pencil',
-                  to: `/manga/${mangaId}/chapters/${row.original.id}/edit`
-                }
-              ],
-              [
-                {
-                  label: 'Xóa chapter',
-                  icon: 'i-lucide-trash',
-                  color: 'error',
-                  click: () => openDeleteModal(row.original)
-                }
-              ]
-            ]"
-          >
-            <UButton
-              icon="i-lucide-more-horizontal"
-              color="neutral"
-              variant="ghost"
-            />
+          <UDropdownMenu :items="[
+            [
+              {
+                label: 'Sửa chapter',
+                icon: 'i-lucide-pencil',
+                to: `/manga/${mangaId}/chapters/${row.original.id}/edit`
+              }
+            ],
+            [
+              {
+                label: 'Xóa chapter',
+                icon: 'i-lucide-trash',
+                color: 'error',
+                click: () => openDeleteModal(row.original)
+              }
+            ]
+          ]">
+            <UButton icon="i-lucide-more-horizontal" color="neutral" variant="ghost" />
           </UDropdownMenu>
         </template>
       </UTable>
 
       <!-- Bottom Pagination -->
-      <div
-        v-if="!isLoading && chapters.length > 0"
-        class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50"
-      >
+      <div v-if="!isLoading && chapters.length > 0"
+        class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
         <div class="text-sm text-gray-500 order-2 sm:order-1">
           Đang xem <span class="font-semibold text-gray-900 dark:text-white">{{ chapters.length }}</span>
           trên tổng số <span class="font-semibold text-gray-900 dark:text-white">{{ total }}</span>
           chapters
         </div>
-        <UPagination
-          v-model:page="page"
-          :total="total"
-          :items-per-page="perPage"
-          show-edges
-          class="order-1 sm:order-2"
-        />
+        <UPagination v-model:page="page" :total="total" :items-per-page="perPage" show-edges
+          class="order-1 sm:order-2" />
       </div>
     </UCard>
 
@@ -330,10 +264,7 @@ watch(perPage, () => {
         <template #header>
           <div class="flex items-center gap-3">
             <div class="p-2 rounded-lg bg-error-100 dark:bg-error-900/20">
-              <UIcon
-                name="i-lucide-trash"
-                class="w-5 h-5 text-error-500"
-              />
+              <UIcon name="i-lucide-trash" class="w-5 h-5 text-error-500" />
             </div>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
               Xác nhận xóa chapter
@@ -353,17 +284,8 @@ watch(perPage, () => {
 
         <template #footer>
           <div class="flex justify-end gap-3">
-            <UButton
-              label="Hủy"
-              color="neutral"
-              variant="ghost"
-              @click="deleteModal = false"
-            />
-            <UButton
-              label="Xóa chapter"
-              color="error"
-              @click="confirmDelete"
-            />
+            <UButton label="Hủy" color="neutral" variant="ghost" @click="deleteModal = false" />
+            <UButton label="Xóa chapter" color="error" @click="confirmDelete" />
           </div>
         </template>
       </UCard>

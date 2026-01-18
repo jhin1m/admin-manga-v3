@@ -75,27 +75,13 @@ function formatDate(dateString?: string) {
 <template>
   <UDashboardPanel>
     <template #header>
-      <UDashboardNavbar
-        :title="manga?.name ? `Chỉnh sửa: ${manga.name}` : 'Chỉnh sửa truyện'"
-        icon="i-lucide-edit"
-      >
+      <UDashboardNavbar :title="manga?.name ? `Chỉnh sửa: ${manga.name}` : 'Chỉnh sửa truyện'" icon="i-lucide-edit">
         <template #leading>
-          <UButton
-            icon="i-lucide-arrow-left"
-            variant="ghost"
-            color="neutral"
-            @click="router.back()"
-          />
+          <UButton icon="i-lucide-arrow-left" variant="ghost" color="neutral" @click="router.back()" />
         </template>
-        <template
-          v-if="manga"
-          #right
-        >
+        <template v-if="manga" #right>
           <div class="flex items-center gap-2 text-sm text-gray-500">
-            <UIcon
-              name="i-lucide-clock"
-              class="w-4 h-4"
-            />
+            <UIcon name="i-lucide-clock" class="w-4 h-4" />
             <span>Cập nhật: {{ formatDate(manga.updated_at) }}</span>
           </div>
         </template>
@@ -103,40 +89,25 @@ function formatDate(dateString?: string) {
     </template>
 
     <template #body>
-      <div
-        v-if="isLoading && !manga"
-        class="flex items-center justify-center p-12"
-      >
-        <UIcon
-          name="i-lucide-loader-2"
-          class="w-10 h-10 animate-spin text-primary"
-        />
+      <div v-if="isLoading && !manga" class="flex items-center justify-center p-12">
+        <UIcon name="i-lucide-loader-2" class="w-10 h-10 animate-spin text-primary" />
       </div>
 
-      <div
-        v-else-if="manga"
-        class="mx-auto w-full space-y-8"
-      >
+      <div v-else-if="manga" class="mx-auto w-full space-y-8">
         <!-- Manga Form -->
-        <MangaForm
-          :manga="manga"
-          :is-editing="true"
-          @submit="handleSubmit"
-        />
+        <MangaForm :manga="manga" :is-editing="true" @submit="handleSubmit" />
 
         <!-- Chapters Table -->
-        <MangaChaptersTable :manga-id="mangaId" />
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2">
+            <MangaChaptersTable :manga-id="mangaId" />
+          </div>
+        </div>
       </div>
 
-      <div
-        v-else
-        class="flex flex-col items-center justify-center p-24 text-center"
-      >
+      <div v-else class="flex flex-col items-center justify-center p-24 text-center">
         <div class="p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-          <UIcon
-            name="i-lucide-book-x"
-            class="w-12 h-12 text-gray-400"
-          />
+          <UIcon name="i-lucide-book-x" class="w-12 h-12 text-gray-400" />
         </div>
         <h3 class="text-xl font-bold">
           Không tìm thấy truyện
@@ -144,13 +115,8 @@ function formatDate(dateString?: string) {
         <p class="text-gray-500 mt-2 max-w-xs">
           Truyện này có thể đã bị xóa hoặc ID không chính xác.
         </p>
-        <UButton
-          label="Quay lại danh sách"
-          variant="link"
-          color="primary"
-          class="mt-4"
-          @click="router.push('/manga')"
-        />
+        <UButton label="Quay lại danh sách" variant="link" color="primary" class="mt-4"
+          @click="router.push('/manga')" />
       </div>
     </template>
   </UDashboardPanel>
