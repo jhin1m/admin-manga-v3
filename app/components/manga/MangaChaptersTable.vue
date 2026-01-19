@@ -6,8 +6,7 @@ import type { Chapter } from '~/types/chapter'
  * MangaChaptersTable Component
  *
  * Hiển thị danh sách chapters của một manga với các tính năng:
- * - Pagination
- * - Row selection (checkbox)
+ * - Load toàn bộ chapters
  * - Edit chapter (navigate to edit page)
  * - Delete chapter (với confirmation modal)
  * - Loading state (skeleton)
@@ -24,22 +23,15 @@ const { fetchChapters, deleteChapter } = useChapters()
 const toast = useToast()
 
 // State management
-const page = ref(1)
-const perPage = ref(20)
 const sort = ref('-order') // Sort by order descending (newest chapters first)
 
-// Fetch chapters data
+// Fetch chapters data (load all chapters without pagination)
 const { data: response, refresh, status } = await useAsyncData(
   `manga-chapters-${props.mangaId}`,
   () => fetchChapters({
     'filter[manga_id]': props.mangaId,
-    'page': page.value,
-    'per_page': perPage.value,
     'sort': sort.value
-  }),
-  {
-    watch: [page, perPage, sort]
-  }
+  })
 )
 
 // Computed values
@@ -113,17 +105,7 @@ function formatDate(dateString: string) {
   })
 }
 
-// Per page options
-const perPageOptions = [
-  { label: '20', value: 20 },
-  { label: '50', value: 50 },
-  { label: '100', value: 100 }
-]
 
-// Reset page when perPage changes
-watch(perPage, () => {
-  page.value = 1
-})
 </script>
 
 <template>
@@ -140,19 +122,7 @@ watch(perPage, () => {
       <UButton icon="i-lucide-plus" label="Thêm chapter" color="primary" :to="`/manga/${mangaId}/chapters/create`" />
     </div>
 
-    <!-- Pagination Toolbar -->
-    <div v-if="!isLoading && chapters.length > 0"
-      class="flex flex-col md:flex-row items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm">
-      <div class="flex items-center gap-4 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
-        <UPagination v-model:page="page" :total="total" :items-per-page="perPage" show-edges :show-controls="true"
-          size="sm" class="shrink-0" />
 
-        <div class="flex items-center gap-2 shrink-0 h-9 px-3 border-l border-gray-200 dark:border-gray-800">
-          <span class="text-xs text-gray-500 font-medium whitespace-nowrap">Hiển thị:</span>
-          <USelect v-model="perPage" :options="perPageOptions" class="w-20" size="sm" />
-        </div>
-      </div>
-    </div>
 
     <!-- Table Section -->
     <UCard :ui="{ body: 'p-0', root: 'overflow-hidden border-gray-200 dark:border-gray-800 shadow-sm' }">
@@ -206,7 +176,7 @@ watch(perPage, () => {
           <div class="flex items-center gap-1.5">
             <UIcon name="i-lucide-eye" class="w-4 h-4 text-gray-400" />
             <span class="font-semibold text-gray-900 dark:text-white">{{ (row.original.views ?? 0).toLocaleString()
-              }}</span>
+            }}</span>
           </div>
         </template>
 
@@ -247,16 +217,12 @@ watch(perPage, () => {
         </template>
       </UTable>
 
-      <!-- Bottom Pagination -->
+      <!-- Total Chapters Info -->
       <div v-if="!isLoading && chapters.length > 0"
-        class="flex flex-col sm:flex-row items-center justify-between gap-4 px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
-        <div class="text-sm text-gray-500 order-2 sm:order-1">
-          Đang xem <span class="font-semibold text-gray-900 dark:text-white">{{ chapters.length }}</span>
-          trên tổng số <span class="font-semibold text-gray-900 dark:text-white">{{ total }}</span>
-          chapters
+        class="flex items-center justify-center gap-2 px-6 py-4 border-t border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
+        <div class="text-sm text-gray-500">
+          Tổng số <span class="font-semibold text-gray-900 dark:text-white">{{ total }}</span> chapters
         </div>
-        <UPagination v-model:page="page" :total="total" :items-per-page="perPage" show-edges
-          class="order-1 sm:order-2" />
       </div>
     </UCard>
 
